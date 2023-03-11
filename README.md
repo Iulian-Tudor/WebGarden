@@ -1,1 +1,1 @@
-# WeGa-Proiect-Web-
+# WeGa-Proiect-Web
