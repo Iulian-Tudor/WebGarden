@@ -1,0 +1,103 @@
+@font-face {
+    font-family: "Playlist";
+    src: url("fonts/Playlist-Script.otf");
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+.bg {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("images/garden_tools_2.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+.signup-box {
+    background-color: #fde4f4;
+    padding: 20px;
+    width: 400px;
+    height: 300px;
+}
+
+.title {
+    text-align: center;
+    font-family: 'Playlist', sans-serif;
+    font-size: 50px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+}
+
+.main-content {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.labels-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 20px;
+}
+
+.signup-label {
+    margin-bottom: 7px;
+    font-family: sans-serif;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 20px;
+}
+
+.input-box {
+    margin-bottom: 10px;
+    font-family: sans-serif;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.big-button {
+    background-color: #00bf63;
+    color: white;
+    border-radius: 10px;
+    padding: 15px 32px;
+    font-size: 20px;
+    border: none;
+}
+
+.big-button:hover {
+    background-color: white;
+    color: #00bf63;
+}
+
+.final-paragraph {
+    display: flex;
+    justify-content: center;
+    font-family: sans-serif;
+}
+
+.login-button {
+    background-color: transparent;
+    border-color: transparent;
+    color: black;
+}
+
+.login-button:hover {
+    background-color: black;
+    color: white;
+}
