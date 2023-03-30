@@ -29,10 +29,12 @@ body {
     border-radius: 15px;
     border: 1px solid black;
     overflow: hidden;
+    width: 80%;
 }
 
 .searchbar input {
     border: none;
+    width: 100%;
 }
 
 .sidebar button {
@@ -42,7 +44,11 @@ body {
 }
 
 .sidebar .img-wrapper {
-    height: 80%;
+    height: 100%;
+}
+
+.sidebar .img-wrapper img {
+    width: 30px;
 }
 
 .sidebar .sidebar-item {
@@ -211,5 +217,12 @@ footer {
     .controls button .img-wrapper img {
         width: 30px;
         height: auto;
+    }
+
+    .sidebar {
+        top: 8vh;
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
 }
