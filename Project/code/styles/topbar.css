@@ -62,10 +62,6 @@ body {
     .topbar-item > .item-title {
         display: none;
     }
-
-    .sidebar {
-        scroll
-    }
 }
 
 @media only screen and (max-width: 600px) {
