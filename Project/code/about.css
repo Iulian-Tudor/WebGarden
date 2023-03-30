@@ -15,6 +15,7 @@ body {
   
   html {
     box-sizing: border-box;
+  
   }
   
   *, *:before, *:after {
@@ -36,14 +37,14 @@ body {
   }
   
   .about-section {
-    padding: 5px;
+    padding: 3px;
     text-align: center;
     background-color: #474e5d;
     color: white;
     background-image: url("images/about4.jpg");
     background-size: 110% 110%;
     background-repeat: no-repeat;
-    border: 5px solid greenyellow;
+    border: 2px solid greenyellow;
   }
 
   .about_title {
@@ -117,6 +118,7 @@ body {
   
   .container {
     padding: 0 16px;
+    overflow: auto;
   }
   
   .container::after, .row::after {
@@ -128,37 +130,42 @@ body {
   .title {
     color: grey;
   }
-  
-  @media screen and (max-width: 650px) {
-    .column {
-      width: 100%;
-      display: block;
-    }
 
+  footer {
+    display: flex;
+    text-align: center;
+    justify-content: space-around;
+    background-color: limegreen;
+    color: white;
+    bottom: 0;
+    padding: 16px;
+  }
+
+  footer a:visited{
+    color:white;
+  }
+
+  @media only screen and (max-width: 991px) and (min-width:641px) {
     .about-section {
-      background-image: url("images/about_phone.jpg");
+      height: calc(100vh - 310px);
     }
 
     .about_title {
-      font-family: 'TitleFont';
-      text-align: center;
-      font-size: 100px;
-      vertical-align: 100px;
-      color: white; 
-      margin-block-start: 0em; 
-      margin-block-end: 0em;
-      margin-top: 50px auto 0;
-      text-shadow: 2px 2px #b509b5;
+      margin: 0;
+      position: absolute;
+      top:10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
   .main_text_container{
-      width: 90%;
-      height: 300px;
-      box-sizing: border-box;
-      background-color: rgba(255, 255, 255, 0.8);
-      padding: 10px;
-      border-radius: 10px;
-      margin: 0 auto;
+      width: 60%;
+      height: 30%;
+      margin: 20px auto;
+      position:absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
   .main_text{
@@ -170,6 +177,42 @@ body {
   
 
   .media_contacts{
+      position:absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+  }
+  
+  @media only screen and (max-width: 640px) {
+    
+    .column {
+      width: 100%;
+      display: block;
+    }
+
+    .about-section {
+      background-image: url("images/about_phone.jpg");
+      background-size: cover;
+      
+    
+    }
+
+    .about_title {
+      font-size: 50px;
+      vertical-align: 100px;
+      margin:50px auto 0;
+    }
+
+  .main_text_container{
+      width: 90%;
+      height: auto;
+      margin: 20px auto;
+
+    }
+
+  .media_contacts{
       display: flex;
       flex-direction: row;
       justify-content: center;
@@ -177,30 +220,4 @@ body {
       margin-top: 10px;
     }
   }
-
-  .footer {
-    padding-bottom: 5px;
-    text-align: center;
-    background: black;
-    
-  }
-
-  .outer_links_container{
-    display: flex;
-    align-items: flex-end;
-    justify-content:center;
-    margin-top: 30px;
-}
-
-.outer_link {
-    background-color: transparent;
-    border-color: transparent;
-    color: white;
-    font-size: 15px;
-    vertical-align: middle;
-}
-
-.outer_link:hover{
-    color:blueviolet;
-}
 
