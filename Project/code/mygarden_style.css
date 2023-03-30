@@ -1,0 +1,145 @@
+@font-face {
+    font-family: "Playlist";
+    src: url("fonts/Playlist-Script.otf");
+}
+
+body, html {
+
+    margin: 0;
+}
+
+body {
+    overflow-x: hidden;
+    height: 100vh;
+}
+
+
+.bg {
+    background-color: #727B24;
+    display: flex;
+    flex-direction: column;
+}
+
+#title {
+    font-family: 'Playlist', sans-serif;
+    font-size: 70px;
+    color: #00bf63;
+    text-align: center;
+    text-shadow: 1px 1px black;
+}
+
+#page-desc {
+    text-align: center;
+    font-size: 30px;
+}
+
+.content-area-container {
+    background-color: #00BF63;
+    width: 90%;
+}
+
+.notif-paragraph {
+    font-size: 20px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin-left: 10px;
+}
+
+.notifications-container {
+    display: flex;
+    flex-direction: row;
+    margin:10px;
+    overflow-x: scroll;
+    width:95%;
+}
+
+@media screen and (max-width: 500px){
+    .notifications-container{
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+
+    .content-area-container{
+        width: 100%;
+    }
+}
+
+.notification {
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    overflow-y: visible;
+}
+
+.notification-image {
+    margin-top: 10px;
+    max-height: 200px;
+}
+
+.notification-button {
+    background-color: #83A5D2;
+    border-radius: 5px;
+    border-style:none;
+    margin-bottom: 5px;
+}
+
+.notification-button:hover {
+    background-color: white;
+    border-color: #83A5D2;
+    border-style: solid;
+    color: #83A5D2;
+}
+
+.flower-details-container {
+    position: fixed;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.flower-details-window {
+    position: absolute;
+    margin: auto;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    max-height: 700px;
+    overflow-y:  scroll;
+}
+
+.close-button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    width:10px;
+    height:10px;
+}
+
+.flower-img {
+    max-height: 500px;
+    margin: 15px;
+}
+
+.flower-title{
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Playlist';
+}
+
+.flower-details{
+    padding: 20px;
+}
+
+.item-status, .item-key {
+    font-size: 20px;;
+}
+
+.item-status {
+    max-height: 15px;
+}
