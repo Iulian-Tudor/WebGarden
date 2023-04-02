@@ -29,14 +29,18 @@ window.onload = function() {
                 </div>
                 <div class="right-wrapper">
 
-                    <div class="item-content">
-                        <h3 class="title">
-                            Flower title
-                        </h3>
-                        <p class="description">
-                            Lorem ipsum dolor sit amet nesciunt illum magni nisi consectetur eveniet! Error, provident doloremque quos, deleniti corrupti explicabo officia, culpa hic sit totam debitis. Amet.
-                        </p>
+                    <div class="item-info">
+                        <div class="item-content">
+                            <h3 class="title">
+                                Flower title
+                            </h3>
+                            <p class="description">
+                                Lorem ipsum dolor sit amet nesciunt illum magni nisi consectetur eveniet! Error, provident doloremque quos, deleniti corrupti explicabo officia, culpa hic sit totam debitis. Amet.
+                            </p>
+                        </div>
+                        <div class="item-price">$299.99</div>
                     </div>
+
                     <div class="controls">
                         <button class="watch">
                             <div class="img-wrapper">
