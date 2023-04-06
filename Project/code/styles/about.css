@@ -41,7 +41,7 @@ body {
     text-align: center;
     background-color: #474e5d;
     color: white;
-    background-image: url("images/about4.jpg");
+    background-image: url("../images/about4.jpg");
     background-size: 110% 110%;
     background-repeat: no-repeat;
     border: 2px solid greenyellow;
@@ -193,7 +193,7 @@ body {
     }
 
     .about-section {
-      background-image: url("images/about_phone.jpg");
+      background-image: url("../images/about_phone.jpg");
       background-size: cover;
       
     
