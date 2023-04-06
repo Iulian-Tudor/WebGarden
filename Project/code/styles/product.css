@@ -1,0 +1,162 @@
+html, body {
+    
+    width: 100%;
+    margin:0 auto;
+    font-family: 'Roboto', sans-serif;
+    background-color: rgba(153, 235, 120, 0.8);
+  }
+   
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+  }
+
+
+.left-column {
+    width: 65%;
+    position: relative;
+    margin-right: 50px;
+    margin-top: 60px;
+  }
+   
+  .right-column {
+    width: 35%;
+    margin-top: 60px;
+  }
+
+  .left-column img {
+    width: 90%;
+    height: 60%;
+    opacity: 1;
+  
+  }
+
+   
+
+.product-description {
+    border-bottom: 1px solid yellow;
+    margin-bottom: 20px;
+    text-align: justify;
+  }
+
+  .product-description h1 {
+    font-weight: 300;
+    font-size: 52px;
+    color: black;
+    letter-spacing: -2px;
+  }
+  .product-description p {
+    font-size: 16px;
+    font-weight: 300;
+    color: black;
+    line-height: 24px;
+  
+  }
+  .product-description a {
+    color: #358ED7;
+    text-decoration: none;
+    font-size: 12px;
+    position: relative;
+    margin: 10px 0;
+    display: inline-block;
+  }
+  
+.tip_alegere {
+    margin-bottom: 20px;
+    margin-top: 20px;
+
+  }
+   
+  .tip_alegere button {
+    border: 2px solid #E1E8EE;
+    border-radius: 6px;
+    padding: 13px 20px;
+    font-size: 14px;
+    color: gray;
+    background-color: #fff;
+    cursor: pointer;
+    transition: all .5s;
+  }
+   
+  .tip_alegere button:hover,
+  .tip_alegere button:active,
+  .tip_alegere button:focus {
+    border: 2px solid yellow;
+    outline: none;
+  }
+   
+  .tip_produs {
+    border-bottom: 1px solid yellow;
+    margin-bottom: 20px;
+  }
+   
+  .tip_produs a {
+    color: #358ED7;
+    text-decoration: none;
+    font-size: 12px;
+    position: relative;
+    margin: 10px 0;
+    display: inline-block;
+  }
+  
+
+  /* Product Price */
+.product-price {
+    display: flex;
+    align-items: center;
+  }
+   
+  .product-price span {
+    font-size: 26px;
+    font-weight: 300;
+    color: black;
+    margin-right: 20px;
+  }
+   
+  .cart-btn {
+    display: inline-block;
+    background-color: #7DC855;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #FFFFFF;
+    text-decoration: none;
+    padding: 12px 30px;
+    transition: all .5s;
+  }
+  .cart-btn:hover {
+    background-color: yellow;
+  }
+
+  /* Responsive */
+@media (max-width: 940px) {
+    .container {
+      flex-direction: column;
+      margin-top: 60px;
+      justify-content:center;
+    }
+   
+    .left-column{
+      width: 100%;
+      margin-top: -50px;
+
+    }
+
+    .right-column {
+      width: 100%;
+    }
+   
+    .left-column img {
+      width: 100%;
+      top: -65px;
+    }
+  }
+   
+  @media (max-width: 535px) {
+    .left-column img {
+      width: 100%;
+      top: -85px;
+    }
+  }
