@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGarden</title>
+    <link rel="stylesheet" href="mygarden_style.css">
+    <link rel="stylesheet" href="styles/topbar.css">
+    <script src="scripts/my_garden.js" defer></script>
+</head>
+<body>
+    <div class="bg">
+        <div class="topbar">
+            <div class="wrapper">
+                <div class="topbar-item logo">
+                    <div class="img-wrapper">
+                        <img src="icons/logo.webp" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/garden.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Garden
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/shopping.png" alt="">
+                </div>
+                <div class="item-title">
+                    Shopping Cart
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/account.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Account
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <p id="title">My Garden</p>
+            <p id="page-desc">Aici puteti urmari stadiul florilor dvs. si le puteti administra cresterea.</p>
+        </div>
+        <div class="main-content">
+            <div class="content-area-container">
+                <p class="notif-paragraph">&#127793; Flori in curs de crestere</p>
+                <div class="notifications-container">
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 1</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 2</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 3</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-area-container">
+                <p class="notif-paragraph">&#127799;Flori gata de recoltare</p>
+                <div class="notifications-container">
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 1</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 2</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                    <div class="notification">
+                        <img class="notification-image" src="images/narcise.webp">
+                        <p>Narcise 3</p>
+                        <button class="notification-button">Verifica</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flower-details-container popup-closed">
+            <div class="flower-details-window">
+                <img class="close-button" src="images/close.png">
+                <img class="flower-img" src="images/narcise.webp">
+                <p class="flower-title">Nume flori</p>
+                <div class="flower-details">
+                    <label class="item-key">Apa: </label>
+                    <label class="item-value">[valoare]</label>
+                    <img class="item-status" src="images/check.png">
+                </div>
+                <div class="flower-details">
+                    <label class="item-key">Temperatura: </label>
+                    <label class="item-value">[valoare]</label>
+                    <img class="item-status" src="images/up-arrow.png">
+                </div>
+                <div class="flower-details">
+                    <label class="item-key">Umiditate: </label>
+                    <label class="item-value">[valoare]</label>
+                    <img class="item-status" src="images/down.png">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
