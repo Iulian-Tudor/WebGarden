@@ -79,6 +79,7 @@ body {
 }
 
 .selling-item {
+    cursor: pointer;
     display: flex;
     background-color: #00bf63;
     height: 150px;

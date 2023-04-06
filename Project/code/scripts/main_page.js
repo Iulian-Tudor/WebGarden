@@ -23,7 +23,7 @@ window.onload = function() {
         const url = imageUrls[Math.random() * imageUrls.length | 0];
 
         const template = `
-            <div class="selling-item">
+            <div class="selling-item" onclick="window.location.href='product.html'">
                 <div class="img-wrapper">
                     <img src="${url}" alt="">
                 </div>
