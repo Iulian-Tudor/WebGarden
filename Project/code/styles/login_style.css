@@ -1,0 +1,138 @@
+@font-face {
+    font-family: "Playlist";
+    src: url("../fonts/Playlist-Script.otf");
+}
+
+body, html {
+    margin: 0;
+    height: 100%;
+  }
+
+.bg {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("../images/login_flowers.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+.login-box {
+    background-color: #83A5D2;
+    padding: 20px;
+    width: 400px;
+    height: 300px;
+}
+
+.title {
+    text-align: center;
+    font-family: 'Playlist', sans-serif;
+    font-size: 50px;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    color: white;
+}
+
+.main-content {
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.labels-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 20px;
+}
+
+.login-label {
+    margin-bottom: 7px;
+    color: white;
+    font-family: sans-serif;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 20px;
+}
+
+.input-box {
+    margin-bottom: 10px;
+    font-family: sans-serif;
+}
+
+.forgot-pass-button {
+    background-color: transparent;
+    border-color: transparent;
+    color: white;
+}
+
+.forgot-pass-button:hover {
+    text-decoration: underline;
+}
+
+.remember-me-container {
+    margin-left: 1vw;
+}
+
+#remember-me-label{
+    color:white; 
+    user-select: none; 
+    font-family: sans-serif;
+}
+
+#remember-me-checkbox:checked {
+    background-color: red;
+}
+
+#remember-me-checkbox:checked:after {
+    content: url("../images/forget-me-not-5.png");
+    display: block;
+    position: inherit;
+    background-color: #83A5D2;
+    /*transform: translate(-20px, -20px);*/
+    
+}
+
+.button-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.big-button {
+    background-color: #8C52FF;
+    color: white;
+    border-radius: 10px;
+    padding: 15px 32px;
+    font-size: 20px;
+    border: none;
+}
+
+.big-button:hover {
+    background-color: white;
+    color: #8C52FF;
+}
+
+.final-paragraph {
+    display: flex;
+    justify-content: center;
+    font-family: sans-serif;
+}
+
+.signup-button {
+    background-color: transparent;
+    border-color: transparent;
+    color: black;
+}
+
+.signup-button:hover {
+    background-color: black;
+    color: white;
+}

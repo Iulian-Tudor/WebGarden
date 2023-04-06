@@ -1,0 +1,120 @@
+@font-face {
+    font-family: AdleryPro;
+    src: url("../fonts/Adlery-Pro-trial.ttf");
+}
+
+@font-face {
+    font-family: TitleFont;
+    src: url("../fonts/TitleFont.ttf");
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+  }
+
+.bg {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-image: url("../images/landing_bg.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+.content_container{
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+.title {
+    font-family: 'TitleFont';
+    text-align: center;
+    font-size: 100px;
+    vertical-align: 100px;
+    color: white; 
+    margin-block-start: 0em; 
+    margin-block-end: 0em;
+    margin-top: 50px;
+    text-shadow: 2px 2px #00bf63;
+}
+
+.main_text_container{
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+}
+
+.main_text{
+    text-align: center;
+    font-family: 'AdleryPro', sans-serif;
+    font-size: inherit;
+}
+
+@media screen and (max-width: 500px) {
+    .main_text{
+        font-size: 5vw;
+    }
+}
+
+.buttons_container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 10px;
+}
+
+@media screen and (min-width: 500px) {
+    .buttons_container{
+        margin-top: 50px;
+    }
+}
+
+.signup_button{
+   
+    background-color: #00bf63;
+    color: white;
+    border-radius: 7px;
+    padding: 15px 32px;
+    font-size: 20px;
+    border: none;
+}
+
+.signup_button:hover{
+    background-color: white;
+    color: #00bf63;
+}
+
+.login_button{
+    
+    background-color: #8c52ff;
+    color: white;
+    border-radius: 7px;
+    padding: 15px 32px;
+    font-size: 20px;
+    border: 0;
+}
+
+.login_button:hover {
+    background-color: white;
+    color: #8c52ff;
+}
+
+.outer_links_container{
+    display: flex;
+    align-items: flex-end;
+    justify-content:flex-end;
+    bottom: 0;
+}
+
+.outer_link {
+    background-color: transparent;
+    border-color: transparent;
+    color: white;
+    font-size: 15px;
+}
+
+.outer_link:hover{
+    color: black;
+}
