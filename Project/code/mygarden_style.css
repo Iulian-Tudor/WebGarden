@@ -95,6 +95,7 @@ body {
 
 .flower-details-container {
     position: fixed;
+    z-index: 10;
     display: flex;
     width: 100%;
     height: 100%;
@@ -142,4 +143,26 @@ body {
 
 .item-status {
     max-height: 15px;
+}
+
+.popup-open{
+    display:flex;
+}
+
+.popup-closed{
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .flower-img{
+        max-width: 100vw;
+    }
+
+    .close-button{
+        top: 20px;
+        right: 20px;
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+    }
 }

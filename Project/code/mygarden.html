@@ -6,9 +6,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WebGarden</title>
     <link rel="stylesheet" href="mygarden_style.css">
+    <link rel="stylesheet" href="styles/topbar.css">
+    <script src="scripts/my_garden.js" defer></script>
 </head>
 <body>
     <div class="bg">
+        <div class="topbar">
+            <div class="wrapper">
+                <div class="topbar-item logo">
+                    <div class="img-wrapper">
+                        <img src="icons/logo.webp" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/garden.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Garden
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/shopping.png" alt="">
+                </div>
+                <div class="item-title">
+                    Shopping Cart
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="icons/account.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Account
+                </div>
+            </div>
+        </div>
+
         <div>
             <p id="title">My Garden</p>
             <p id="page-desc">Aici puteti urmari stadiul florilor dvs. si le puteti administra cresterea.</p>
@@ -57,7 +93,7 @@
             </div>
         </div>
 
-        <div class="flower-details-container">
+        <div class="flower-details-container popup-closed">
             <div class="flower-details-window">
                 <img class="close-button" src="images/close.png">
                 <img class="flower-img" src="images/narcise.webp">
