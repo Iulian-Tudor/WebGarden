@@ -90,6 +90,19 @@ body {
   #table-of-contents > ul {
     list-style-type: none;
   }
+
+  img {
+    width: 50%;
+    margin: 0 10px;
+  }
+
+  .db-item {
+    flex-direction: column;
+  }
+
+  #db-img {
+    width: 100%;
+  }
   
   @media screen and (max-width: 577px) {
     div.status {
