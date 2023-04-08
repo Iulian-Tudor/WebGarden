@@ -66,6 +66,10 @@ body {
     height: 20px;
 }
 
+.content-area-container {
+    background-color: #00BF63;
+}
+
 .notifications-container {
     display: flex;
     flex-direction: row;
