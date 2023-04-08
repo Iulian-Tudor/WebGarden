@@ -1,11 +1,7 @@
-body {
-    overflow-y: hidden;
-}
-
 .content {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     width: 100%;
     height: calc(100vh - 8vh);
@@ -14,12 +10,21 @@ body {
 .content .main {
     background-color: rgb(180, 180, 180);
     width: 80%;
-    height: 100vh;
     overflow-y: scroll;
+}
+
+.description {
+    overflow-y: scroll;
+    max-height: 80px;
+    margin: 5px;
 }
 
 .items {
     padding: 10px;
+}
+
+.title {
+    margin: 0;
 }
 
 .selling-item {
@@ -49,6 +54,7 @@ img {
     justify-content: center;
     align-items: center;
 }
+
 
 .selling-item .controls {
     display: flex;
@@ -143,4 +149,43 @@ button.checkout {
     font-size: 25px;
     padding: 20px;
     border-radius: 10px;
+}
+
+@media only screen and (max-width: 1200px) {
+    .selling-item .img-wrapper {
+        flex: 1.5;
+        height: 100%;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .selling-item .img-wrapper {
+        flex: 2;
+        height: 100%;
+    }
+
+    .control-item input.quantity {
+        width: 1em;
+    }
+
+    .control-item label {
+        font-size: 0.8em;
+    }
+
+    .selling-item .right-wrapper {
+        padding: 0 5px;
+    }
+
+    .content .main {
+        width: 100%;
+    }
+
+    .checkout-container {
+        font-size: 0.6em;
+        width: 60%;
+    }
+
+    .item-price {
+        font-size: 18px;
+    }
 }
