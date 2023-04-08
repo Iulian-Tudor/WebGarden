@@ -109,6 +109,15 @@ body {
       width: auto;
     }
   }
+  @media screen and (max-width: 800px) {
+    .interface-item {
+      flex-direction: column;
+    }
+
+    img {
+      width: 80%;
+    }
+  }
   @media screen and (max-width: 980px) {
     body {
       margin: 0 2em;
