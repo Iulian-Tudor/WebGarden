@@ -8,7 +8,7 @@ function main() {
         'https://cdn.pixabay.com/photo/2015/04/19/08/32/marguerite-729510__340.jpg'
     ];
 
-    for(let i = 0; i < 3; ++i) {
+    for(let i = 0; i < 4; ++i) {
         const url = imageUrls[i % imageUrls.length];
         const template = `<div class="selling-item">
             <div class="img-wrapper">
