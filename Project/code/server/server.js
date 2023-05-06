@@ -22,7 +22,7 @@ registerRoute('/', (req, res) => {
 const server = http.createServer(async (req, res) => {
     if(!routes.has(req.url)) {
         try {
-            const data = await fs.readFile('..' + req.url);
+            const data = await fs.promises.readFile('..' + req.url);
             res.statusCode = 200;
             res.end(data);
         } catch(err) {
