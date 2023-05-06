@@ -37,7 +37,7 @@ function main() {
         
                 <button class="delete">
                     <div class="img-wrapper">
-                        <img src="icons/x_sign.png" alt="">
+                        <img src="../icons/x_sign.png" alt="">
                     </div>
                 </button>
         

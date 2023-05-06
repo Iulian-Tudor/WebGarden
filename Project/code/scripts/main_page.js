@@ -44,12 +44,12 @@ window.onload = function() {
                     <div class="controls">
                         <button class="watch">
                             <div class="img-wrapper">
-                                <img src="icons/eye.png" alt="">
+                                <img src="../icons/eye.png" alt="">
                             </div>
                         </button>
                         <button class="cart">
                             <div class="img-wrapper">
-                                <img src="icons/shopping.png" alt="">
+                                <img src="../icons/shopping.png" alt="">
                             </div>
                         </button>
                     </div>
