@@ -1,13 +1,14 @@
 import http from 'http';
 import fs from 'fs';
 
-import { handleTest } from './test.js';
+import { handleTest, handleData } from './test.js';
 
 const port = 3000;
 
 const routes = new Map();
 
 registerRoute('/test', handleTest);
+registerRoute('/data', handleData);
 
 function registerRoute(route, handler) {
     routes.set(route, handler);
