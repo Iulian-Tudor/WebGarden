@@ -2,30 +2,14 @@ import http from 'http';
 import fs from 'fs';
 import cookie from 'cookie';
 
-import { handleTest, handleData } from './test.js';
-import { registerUser } from './iulian/signupController.js';
-import { loginUser } from './iulian/loginController.js';
-import { logoutUser } from './iulian/logoutController.js';
+import { PORT } from './settings.js';
+import Router from './Router.js';
+import RequestType from './RequestType.js';
+import { registerRoutes } from './routes.js';
 
-const port = 3000;
+const router = new Router();
 
-const routes = new Map();
-
-registerRoute('/test', handleTest);
-registerRoute('/data', handleData);
-registerRoute('/register', registerUser);
-registerRoute('/login', loginUser);
-registerRoute('/logout', logoutUser);
-
-function registerRoute(route, handler) {
-    routes.set(route, handler);
-}
-
-registerRoute('/', (req, res) => {
-    res.write('Hello world');
-    res.statusCode = 200;
-    res.end();
-});
+registerRoutes(router);
 
 function isAuthenticated(req) {
     const cookies = cookie.parse(req.headers.cookie || '');
@@ -33,7 +17,12 @@ function isAuthenticated(req) {
   }
 
 const server = http.createServer(async (req, res) => {
-    if(!routes.has(req.url)) {
+    const requestType = RequestType.fromString(req.method);
+    if(requestType === undefined) {
+        throw new Error(`Request type ${req.method} not handled`);
+    }
+
+    if(!router.exists(req.url, requestType)) {
         try {
             const data = await fs.promises.readFile('..' + req.url);
             res.statusCode = 200;
@@ -45,10 +34,17 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    const handler = routes.get(req.url);
-    handler(req, res);
+    let bodyRaw = '';
+
+    req.on('data', chunk => bodyRaw += chunk);
+
+    req.on('end', () => {
+        console.log(bodyRaw);
+    });
+
+    router.handle(req.url, requestType, req, res);
 });
 
-server.listen(port, () => {
-    console.log(`listening on port ${port}...`);
+server.listen(PORT, () => {
+    console.log(`listening on port ${PORT}...`);
 });
