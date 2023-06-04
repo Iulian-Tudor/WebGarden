@@ -5,8 +5,8 @@ import { logoutUser } from "./controllers/logoutController.js";
 
 function registerRoutes(router) {
     router.get('/', (req, res) => {
-        res.write('Hello world');
-        res.statusCode = 200;
+        res.statusCode = 302;
+        res.setHeader('Location', '/html/index.html');
         res.end();
     });
 

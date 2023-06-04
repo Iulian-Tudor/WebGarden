@@ -6,8 +6,21 @@ import { PORT } from './settings.js';
 import Router from './Router.js';
 import RequestType from './RequestType.js';
 import { registerRoutes } from './routes.js';
+import { connectToDb } from './db.js';
 
 const router = new Router();
+
+
+connectToDb().then(async ({ db }) => {
+    const flowers = db.collection('flowers').find({});
+    const flower = await flowers.next();
+    console.log(flower);
+
+    const categories = db.collection('categories').find({"_id": flower.category_id});
+    const category = await categories.next();
+    console.log(category);
+});
+
 
 registerRoutes(router);
 
