@@ -2,12 +2,13 @@ import http from 'http';
 import fs from 'fs';
 
 import { handleTest } from './test.js';
+import { handleNotifications } from './notifications.js';
+import { handleWatchlist } from './watchlist.js';
+import { handlePlantedFlowers, handleReadyFlowers } from './plantedFlowers.js';
 
 const port = 3000;
 
 const routes = new Map();
-
-registerRoute('/test', handleTest);
 
 function registerRoute(route, handler) {
     routes.set(route, handler);

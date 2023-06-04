@@ -1,5 +1,9 @@
 function handleTest(req, res) {
-    res.end('Test');
+    var data = {
+        'something' : 1,
+        'else' : 2
+    };
+    res.end(JSON.stringify(data));
 }
 
 export { handleTest };
