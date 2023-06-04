@@ -1,4 +1,4 @@
-import { connectToDb } from './db.js';
+import { connectToDb } from '../db.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 
@@ -7,7 +7,7 @@ export async function loginUser(req, res) {
 
   // Sanitize user inputs
   const sanitizedEmail = sanitize(email);
-  const sanitizedPassword = sanitize(password);
+  //const sanitizedPassword = sanitize(password);
 
   // Connect to the database
   const { db, client } = await connectToDb();
@@ -18,16 +18,16 @@ export async function loginUser(req, res) {
 
     if (!user) {
       res.statusCode = 401;
-      res.end('Invalid email or password');
+      res.end('Invalid email');
       return;
     }
 
     // Compare the hashed password with the given password
-    const isPasswordCorrect = await bcrypt.compare(sanitizedPassword, user.password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrect) {
       res.statusCode = 401;
-      res.end('Invalid email or password');
+      res.end('Invalid password');
       return;
     }
 
