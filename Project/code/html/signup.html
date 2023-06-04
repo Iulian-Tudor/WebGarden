@@ -32,5 +32,21 @@
             </div>
         </div>
     </div>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const email = document.getElementById('email').value;
+          const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+          const data = { email, username, password };
+          const response = await fetch('/register', {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const result = await response.json();
+          alert(result.message);
+        });
+    </script>
 </body>
 </html>

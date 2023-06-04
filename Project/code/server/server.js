@@ -1,29 +1,45 @@
 import http from 'http';
 import fs from 'fs';
+// import cookie from 'cookie';
 
-import { handleTest } from './test.js';
-import { handleNotifications } from './notifications.js';
-import { handleWatchlist } from './watchlist.js';
-import { handlePlantedFlowers, handleReadyFlowers } from './plantedFlowers.js';
+import { PORT } from './settings.js';
+import Router from './Router.js';
+import RequestType from './RequestType.js';
+import { registerRoutes } from './routes.js';
+import { connectToDb } from './db.js';
 
-const port = 3000;
+const router = new Router();
 
-const routes = new Map();
 
-function registerRoute(route, handler) {
-    routes.set(route, handler);
-}
+connectToDb().then(async ({ db }) => {
+    const flowers = db.collection('flowers').find({});
+    const flower = await flowers.next();
+    console.log(flower);
 
-registerRoute('/', (req, res) => {
-    res.write('Hello world');
-    res.statusCode = 200;
-    res.end();
+    const categories = db.collection('categories').find({"_id": flower.category_id});
+    const category = await categories.next();
+    console.log(category);
 });
 
+
+registerRoutes(router);
+
+// function isAuthenticated(req) {
+//     const cookies = cookie.parse(req.headers.cookie || '');
+//     return !!cookies.user_email;
+//   }
+
 const server = http.createServer(async (req, res) => {
-    if(!routes.has(req.url)) {
+    const requestType = RequestType.fromString(req.method);
+
+    // DEBUG
+    if(requestType === undefined) {
+        throw new Error(`Request type ${req.method} not handled`);
+    }
+
+    if(!router.exists(req.url, requestType)) {
         try {
-            const data = await fs.readFile('..' + req.url);
+            const data = await fs.promises.readFile('..' + req.url);
             res.statusCode = 200;
             res.end(data);
         } catch(err) {
@@ -33,10 +49,25 @@ const server = http.createServer(async (req, res) => {
         return;
     }
 
-    const handler = routes.get(req.url);
-    handler(req, res);
+    let bodyRaw = '';
+
+    req.on('data', chunk => bodyRaw += chunk);
+
+    req.on('end', () => {
+        try {
+            req.body = JSON.parse(bodyRaw);
+        } catch(e) {
+            if(bodyRaw) {
+                // if body has been read partially
+                res.statusCode = 400;
+                res.end(JSON.stringify(e));
+                return;
+            }
+        }
+        router.handle(req.url, requestType, req, res);
+    });
 });
 
-server.listen(port, () => {
-    console.log(`listening on port ${port}...`);
+server.listen(PORT, () => {
+    console.log(`listening on port ${PORT}...`);
 });
