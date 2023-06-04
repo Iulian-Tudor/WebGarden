@@ -1,6 +1,7 @@
 import { connectToDb } from '../db.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
+import cookie from 'cookie';
 
 export async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -32,6 +33,7 @@ export async function loginUser(req, res) {
     }
 
     // If everything is correct, return a success message
+    // TODO: crypt the token to be sent to the user (crypt, not hash)
     const userCookie = cookie.serialize('user_email', sanitizedEmail, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -44,6 +46,7 @@ export async function loginUser(req, res) {
 
     
   } catch (error) {
+    console.log(error);
     res.statusCode = 500;
     res.end('Internal server error');
   } finally {

@@ -8,7 +8,7 @@ import jwt from 'jsonwebtoken';
 
 export async function registerUser(req, res) {
   try {
-    const { email, username, password } = JSON.parse(req.body);
+    const { email, username, password } = req.body;
 
     // Validate and sanitize inputs
     if (!validator.isEmail(email)) {
@@ -42,6 +42,7 @@ export async function registerUser(req, res) {
     res.statusCode = 201;
     res.end(JSON.stringify({ message: 'User registered successfully', result }));
   } catch (error) {
+    console.log(error);
     res.statusCode = 500;
     res.end(JSON.stringify({ message: 'Error registering user', error }));
   }
