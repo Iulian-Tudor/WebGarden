@@ -1,6 +1,7 @@
 import { loginUser } from "./controllers/loginController.js";
 import { registerUser } from "./controllers/signupController.js";
 import { logoutUser } from "./controllers/logoutController.js";
+import ProductsController from "./controllers/productsController.js";
 
 
 function registerRoutes(router) {
@@ -18,6 +19,8 @@ function registerRoutes(router) {
     router.post('/login', loginUser);
     router.post('/register', registerUser);
     router.post('/logout', logoutUser);
+
+    ProductsController.registerRoutes(router);
 }
 
 export { registerRoutes };

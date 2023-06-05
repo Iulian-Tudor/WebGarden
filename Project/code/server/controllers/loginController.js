@@ -34,12 +34,18 @@ export async function loginUser(req, res) {
 
     // If everything is correct, return a success message
     // TODO: crypt the token to be sent to the user (crypt, not hash)
-    const userCookie = cookie.serialize('user_email', sanitizedEmail, {
+    const userCookie = cookie.serialize('X-WEBGA-TOKEN', sanitizedEmail, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week
       path: '/',
     });
-  
+
+    await db.collection('user_sessions').insertOne({token: sanitizedEmail, user_id: user._id, createdAt: new Date()});
+    
+    // needs to be created only once, at database creation
+    await db.collection('user_sessions').createIndex({createdAt: 1}, { expireAfterSeconds: 60 });
+    
+
     res.setHeader('Set-Cookie', userCookie);
     res.statusCode = 200;
     res.end('Login successful');

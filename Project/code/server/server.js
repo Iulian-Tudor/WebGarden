@@ -11,15 +11,15 @@ import { connectToDb } from './db.js';
 const router = new Router();
 
 
-connectToDb().then(async ({ db }) => {
-    const flowers = db.collection('flowers').find({});
-    const flower = await flowers.next();
-    console.log(flower);
+// connectToDb().then(async ({ db }) => {
+//     const flowers = db.collection('flowers').find({});
+//     const flower = await flowers.next();
+//     console.log(flower);
 
-    const categories = db.collection('categories').find({"_id": flower.category_id});
-    const category = await categories.next();
-    console.log(category);
-});
+//     const categories = db.collection('categories').find({"_id": flower.category_id});
+//     const category = await categories.next();
+//     console.log(category);
+// });
 
 
 registerRoutes(router);
@@ -55,7 +55,19 @@ const server = http.createServer(async (req, res) => {
 
     req.on('end', () => {
         try {
-            req.body = JSON.parse(bodyRaw);
+            switch(req.headers['content-type']) {
+                case 'application/x-www-form-urlencoded':
+                    req.body = {};
+                    for(const pair of bodyRaw.split('&')) {
+                        const [key, value] = pair.split('=', 2).map(decodeURIComponent);
+                        req.body[key] = value;
+                    }
+                    break;
+                case 'application/json':
+                    req.body = JSON.parse(bodyRaw);
+                    break;
+            }
+
         } catch(e) {
             if(bodyRaw) {
                 // if body has been read partially
@@ -64,7 +76,12 @@ const server = http.createServer(async (req, res) => {
                 return;
             }
         }
-        router.handle(req.url, requestType, req, res);
+        try {
+            router.handle(req.url, requestType, req, res);
+        } catch(e) {
+            res.statusCode = 500;
+            res.end();
+        }
     });
 });
 
