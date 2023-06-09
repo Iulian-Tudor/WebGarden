@@ -1,71 +1,90 @@
 import { connectToDb } from "../db.js";
+import { getAuthSession } from "../util.js";
 import Validator from "../validator.js";
-import cookie from 'cookie';
 
 
 const productValidator = new Validator()
-    .addRule('seller_id', 'number', null)
     .addRule('category_name', 'string', null)
     .addRule('name', 'string', null)
     .addRule('price', 'number', null)
     .addRule('user_description', 'string', null)
     .addRule('image_url', 'string', null)
-    .addRule('flower_type', 'string', null);
+    .addRule('flower_data', 'object', new Validator()
+        .addRule('flower_type', 'string', null)
+        .addRule('optimal_soil', 'string', null)
+        .addRule('general_description', 'string', null)
+        .addRule('season', 'string', null));
+
+
+const productHandleValidator = new Validator()
+    .addRule('category_name', 'string', null)
+    .addRule('name', 'string', null);
 
 
 export default class ProductsController {
-    static async addProductToCart(req, res) {
+    static async addProductToCart(req, res, userSession) {
         const { db, client } = await connectToDb();
 
+        const session = client.startSession();
+        session.startTransaction();
+
         try {
-            const product = req.body;
-            const validInfo = productValidator.validate(product);
-    
+            const productHandle = {...req.body};
+            const validInfo = productHandleValidator.validate(productHandle);
             if(!validInfo.valid) {
                 res.statusCode = 400;
-                res.write(JSON.stringify(validInfo));
-                res.end();
-                return;
+                return res.end(validInfo.serialize());
             }
 
             const categories = db.collection('categories');
 
-            const category = await categories.findOne({name: product.category_name});
+            const category = await categories.findOne({name: productHandle.category_name});
             if(category === null) {
-                await categories.insertOne({name: product.category_name, products: []})
+                res.statusCode = 400;
+                return res.end('Category is not available');
+            }
+
+            const product = category.products.find(product => product.name = productHandle.name);
+            if(!product) {
+                res.statusCode = 400;
+                return res.end('Product is not available');
+            }
+
+            const carts = db.collection('carts');
+            const cart = await carts.findOne({user_id: userSession.user_id});
+            if(cart === null) {
+                await carts.insertOne({user_id: userSession.user_id, created_at: new Date(), products: []});
             }
 
             await categories.updateOne(
-                { name: product.category_name },
-                { $push: { 'products': product } }
+                { _id: category._id },
+                { $pull: { products: { _id: product._id } } }
+            )
+
+            await carts.updateOne(
+                { user_id: userSession.user_id },
+                { $push: { products: product } }
             );
-    
+
+            await session.commitTransaction();
+
             res.end();
         } catch(e) {
+            await session.abortTransaction();
             console.log(e);
             res.statusCode = 500;
             res.end();
         } finally {
-            client.close();
+            session.endSession();
+            await client.close();
         }
     }
 
-    static async getCartProducts(req, res) {
+    static async getCartProducts(req, res, userSession) {
         const { db, client } = await connectToDb();
 
         try {
-            const cookies = cookie.parse(req.headers.cookie);
-            const sessionToken = cookies['X-WEBGA-TOKEN'];
-            
-            const session = await db.collection('user_sessions').findOne({token: sessionToken});
-            if(session === null) {
-                res.statusCode = 403;
-                res.end("Session token not found");
-                return;
-            }
-
-            const userId = session.user_id;
-
+            const userId = userSession.user_id;
             const cart = await db.collection('carts').findOne({user_id: userId});
 
             if(cart === null) {
@@ -81,33 +100,84 @@ export default class ProductsController {
             console.log(e);
             res.statusCode = 500;
             res.end();
+        } finally {
+            await client.close();
         }
     }
 
-    static async getProductInfo(req, res) {
-        try {
+    static async addProduct(req, res, userSession) {
+        const { db, client } = await connectToDb();
 
+        try {
+            const product = {...req.body};
+
+            const validInfo = productValidator.validate(product);
+            if(!validInfo.valid) {
+                res.statusCode = 400;
+                return res.end(validInfo.serialize());
+            }
+            
+            product['seller_id'] = userSession.user_id;
+
+            const categories = db.collection('categories');
+
+            const category = await categories.findOne({name: product.category_name});
+            if(category === null) {
+                await categories.insertOne({name: product.category_name, products: []})
+            }
+
+            await categories.updateOne(
+                { name: product.category_name },
+                { $push: { products: product } }
+            );
+    
+            res.end();
         } catch(e) {
             console.log(e);
             res.statusCode = 500;
             res.end();
+        } finally {
+            await client.close();
         }
     }
 
     static async getProducts(req, res) {
-        try {
+        const { db, client } = await connectToDb();
 
+        // TODO: get by filters
+
+        try {
+            const categories = db.collection('categories');
+
+            const products = await categories.find({}).toArray();
+            res.write(JSON.stringify(products));
+            res.end();
         } catch(e) {
             console.log(e);
             res.statusCode = 500;
             res.end();
+        } finally {
+            await client.close();
         }
     }
 
+    static requireAuth(next) {
+        // middleware to check for auth
+        return async (req, res) => {
+            const session = await getAuthSession(req);
+            if(session === null) {
+                res.statusCode = 403;
+                return res.end("Not authorized");
+            }
+            return next(req, res, session);
+        };
+    }
+
     static registerRoutes(router) {
-        router.post('/cart_products', this.addProductToCart);
-        router.get('/cart_products', this.getCartProducts);
-        router.get('/product_info', this.getProductInfo);
-        router.get('/products', this.getProducts);
+        router.get('/cart_products', this.requireAuth(this.getCartProducts));
+        router.post('/cart_products', this.requireAuth(this.addProductToCart));
+
+        router.get('/products', this.requireAuth(this.getProducts));
+        router.post('/products', this.requireAuth(this.addProduct));
     }
 }

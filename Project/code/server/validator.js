@@ -4,6 +4,10 @@ class ValidInfo {
         this.conflicting = conflicting;
         this.reason = reason;
     }
+
+    serialize() {
+        return JSON.stringify(this);
+    }
 }
 
 export default class Validator {

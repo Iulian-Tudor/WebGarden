@@ -1,8 +1,7 @@
 import http from 'http';
 import fs from 'fs';
-// import cookie from 'cookie';
 
-import { PORT } from './settings.js';
+import { PORT, SESSION_TTL } from './settings.js';
 import Router from './Router.js';
 import RequestType from './RequestType.js';
 import { registerRoutes } from './routes.js';
@@ -10,24 +9,18 @@ import { connectToDb } from './db.js';
 
 const router = new Router();
 
-
-// connectToDb().then(async ({ db }) => {
-//     const flowers = db.collection('flowers').find({});
-//     const flower = await flowers.next();
-//     console.log(flower);
-
-//     const categories = db.collection('categories').find({"_id": flower.category_id});
-//     const category = await categories.next();
-//     console.log(category);
-// });
-
-
 registerRoutes(router);
 
-// function isAuthenticated(req) {
-//     const cookies = cookie.parse(req.headers.cookie || '');
-//     return !!cookies.user_email;
-//   }
+(async () => {  // create the ttl index on the user_sessions
+    const { db, client } = await connectToDb();
+
+    try {
+        await db.collection('user_sessions').dropIndex({createdAt: 1});
+    } catch(e) { /* not present */ }
+
+    await db.collection('user_sessions').createIndex({createdAt: 1}, { expireAfterSeconds: SESSION_TTL });
+    client.close();
+})();
 
 const server = http.createServer(async (req, res) => {
     const requestType = RequestType.fromString(req.method);
