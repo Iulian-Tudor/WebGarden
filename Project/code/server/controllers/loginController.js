@@ -1,4 +1,5 @@
 import { connectToDb } from '../db.js';
+import { encrypt, decrypt } from '../Utils/cryptoUtils.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 import cookie from 'cookie';
@@ -34,11 +35,13 @@ export async function loginUser(req, res) {
 
     // If everything is correct, return a success message
     // TODO: crypt the token to be sent to the user (crypt, not hash)
-    const userCookie = cookie.serialize('user_email', sanitizedEmail, {
+    const encryptedEmail = encrypt(sanitizedEmail);
+    const userCookie = cookie.serialize('user_email', encryptedEmail, {
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week
       path: '/',
     });
+    
   
     res.setHeader('Set-Cookie', userCookie);
     res.statusCode = 200;
