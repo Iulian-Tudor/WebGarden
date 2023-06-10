@@ -1,7 +1,10 @@
 import crypto from 'crypto';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const algorithm = 'aes-256-cbc';
-const secretKey = 'ymeoQArwhgYnhoMruEoKGA==';
+const secretKey = process.env.WEBGA_KEY;
 const ivLength = 16;
 
 export function encrypt(text) {

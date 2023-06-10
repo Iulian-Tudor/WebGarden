@@ -1,6 +1,6 @@
 import { connectToDb } from "../db.js";
-import { getAuthSession } from "../util.js";
 import Validator from "../validator.js";
+import { requireAuth } from "../middlewares.js";
 
 
 const productValidator = new Validator()
@@ -161,23 +161,11 @@ export default class ProductsController {
         }
     }
 
-    static requireAuth(next) {
-        // middleware to check for auth
-        return async (req, res) => {
-            const session = await getAuthSession(req);
-            if(session === null) {
-                res.statusCode = 403;
-                return res.end("Not authorized");
-            }
-            return next(req, res, session);
-        };
-    }
-
     static registerRoutes(router) {
-        router.get('/cart_products', this.requireAuth(this.getCartProducts));
-        router.post('/cart_products', this.requireAuth(this.addProductToCart));
+        router.get('/cart_products', requireAuth(this.getCartProducts));
+        router.post('/cart_products', requireAuth(this.addProductToCart));
 
-        router.get('/products', this.requireAuth(this.getProducts));
-        router.post('/products', this.requireAuth(this.addProduct));
+        router.get('/products', requireAuth(this.getProducts));
+        router.post('/products', requireAuth(this.addProduct));
     }
 }

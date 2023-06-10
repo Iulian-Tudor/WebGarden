@@ -43,7 +43,7 @@ export async function loginUser(req, res) {
     });
     
     // TODO: verificare daca deja exista acea sesiune. Si daca da... i guess update it?
-    await db.collection('user_sessions').insertOne({token: sanitizedEmail, user_id: user._id, createdAt: new Date()});
+    await db.collection('user_sessions').insertOne({token: encryptedEmail, user_id: user._id, createdAt: new Date()});
     
     res.setHeader('Set-Cookie', userCookie);
     res.statusCode = 200;
