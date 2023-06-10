@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 
 
 export async function registerUser(req, res) {
+  // TODO: verificare daca nu exista deja contul
   try {
     const { email, username, password } = req.body;
 
