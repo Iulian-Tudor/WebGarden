@@ -34,6 +34,16 @@ export async function registerUser(req, res) {
 
     // Connect to the database and create a new user
     const { db, client } = await connectToDb();
+    const existingUser = await db.collection('users').findOne({
+      $or: [{ email: sanitizedEmail }, { username: sanitizedUsername }],
+    });
+
+    if (existingUser) {
+      res.statusCode = 400;
+      res.end(JSON.stringify({ message: 'Email or username already taken' }));
+      return;
+    }
+
     const hashedPassword = await bcryptjs.hash(password, 10);
     const newUser = { email: sanitizedEmail, username: sanitizedUsername, password: hashedPassword };
     const result = await db.collection('users').insertOne(newUser);
