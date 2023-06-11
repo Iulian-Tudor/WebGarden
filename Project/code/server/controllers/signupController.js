@@ -2,8 +2,7 @@ import { connectToDb } from '../db.js';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import sanitize from 'mongo-sanitize';
-import nodemailer from 'nodemailer';
-import jwt from 'jsonwebtoken';
+import { sendVerificationEmail } from './Utils/emailVerification.js';
 
 
 export async function registerUser(req, res) {
@@ -46,8 +45,9 @@ export async function registerUser(req, res) {
     }
 
     const hashedPassword = await bcryptjs.hash(password, 10);
-    const newUser = { email: sanitizedEmail, username: sanitizedUsername, password: hashedPassword };
+    const newUser = { email: sanitizedEmail, username: sanitizedUsername, password: hashedPassword, verified: false };
     const result = await db.collection('users').insertOne(newUser);
+    await sendVerificationEmail(sanitizedEmail, result.insertedId);
     client.close();
   
     res.statusCode = 201;
