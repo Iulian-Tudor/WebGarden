@@ -22,6 +22,7 @@ registerRoutes(router);
     client.close();
 })();
 
+
 const server = http.createServer(async (req, res) => {
     const requestType = RequestType.fromString(req.method);
 

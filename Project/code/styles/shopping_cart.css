@@ -14,8 +14,8 @@
 }
 
 .description {
-    overflow-y: scroll;
-    max-height: 80px;
+    /* overflow-y: scroll; */
+    /* max-height: 80px; */
     margin: 5px;
 }
 
@@ -49,9 +49,9 @@ img {
 
 .selling-item .right-wrapper {
     display: flex;
-    padding: 0 20px;
+    padding: 0 40px;
     flex: 4;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 

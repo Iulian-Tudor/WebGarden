@@ -1,6 +1,7 @@
 import { connectToDb } from "../db.js";
 import Validator from "../validator.js";
 import { requireAuth } from "../middlewares.js";
+import { ObjectId } from "mongodb";
 
 
 const productValidator = new Validator()
@@ -18,7 +19,9 @@ const productValidator = new Validator()
 
 const productHandleValidator = new Validator()
     .addRule('category_name', 'string', null)
-    .addRule('name', 'string', null);
+    .addRule('name', 'string', null)
+    .addRule('seller_id', 'string', null)
+    .addRule('price', 'number', null);
 
 
 export default class ProductsController {
@@ -36,6 +39,8 @@ export default class ProductsController {
                 return res.end(validInfo.serialize());
             }
 
+            productHandle['quantity'] = productHandle['quantity'] ?? 1;
+
             const categories = db.collection('categories');
 
             const category = await categories.findOne({name: productHandle.category_name});
@@ -44,27 +49,50 @@ export default class ProductsController {
                 return res.end('Category is not available');
             }
 
-            const product = category.products.find(product => product.name = productHandle.name);
-            if(!product) {
+            const product = category.products.find(product => {
+                return product.name === productHandle['name']
+                    && product.seller_id.equals(productHandle['seller_id'])
+                    && product.price === productHandle['price'];
+            });
+            if(!product || !product.quantity) {
                 res.statusCode = 400;
                 return res.end('Product is not available');
             }
 
             const carts = db.collection('carts');
-            const cart = await carts.findOne({user_id: userSession.user_id});
+            let cart = await carts.findOne({user_id: userSession.user_id});
             if(cart === null) {
                 await carts.insertOne({user_id: userSession.user_id, created_at: new Date(), products: []});
+                cart = await carts.findOne({user_id: userSession.user_id});
             }
 
-            await categories.updateOne(
-                { _id: category._id },
-                { $pull: { products: { _id: product._id } } }
-            )
+            const storedCartProduct = cart.products.find(p => {
+                return product.name === productHandle['name']
+                    && product.seller_id.equals(productHandle['seller_id'])
+                    && product.price === productHandle['price'];
+            });
 
-            await carts.updateOne(
-                { user_id: userSession.user_id },
-                { $push: { products: product } }
-            );
+            // decrement the quality
+            // await categories.updateOne(
+            //     { name: product['category_name'] },
+            //     { $set: { "products.$[element].quantity": product['quantity'] } },
+            //     { arrayFilters: [{ "element._id": product._id }] }
+            // );
+
+            if(!storedCartProduct) {
+                const addedCount = Math.min(productHandle['quantity'], product['quantity']);
+                await carts.updateOne(
+                    { user_id: userSession.user_id },
+                    { $push: { products: {...product, quantity: addedCount} } }
+                );
+            } else {
+                const addedCount = Math.min(storedCartProduct['quantity'] + productHandle['quantity'], product['quantity']);
+                await carts.updateOne(
+                    { user_id: new ObjectId(userSession.user_id) },
+                    { $set: { "products.$[element].quantity": addedCount } },
+                    { arrayFilters: [{ "element._id": storedCartProduct._id }] }
+                );
+            }
 
             await session.commitTransaction();
 
@@ -76,6 +104,36 @@ export default class ProductsController {
             res.end();
         } finally {
             session.endSession();
+            await client.close();
+        }
+    }
+
+    static async deleteCartProducts(req, res, userSession) {
+        const { db, client } = await connectToDb();
+
+        try {
+            const productHandle = {...req.body};
+            const validInfo = productHandleValidator.validate(productHandle);
+            if(!validInfo.valid) {
+                res.statusCode = 400;
+                return res.end(validInfo.serialize());
+            }
+
+            console.log(productHandle);
+
+            const carts = db.collection('carts');
+
+            await carts.updateOne(
+                { user_id: new ObjectId(userSession.user_id) },
+                { $pull: { products: { name: productHandle['name'], seller_id: new ObjectId(productHandle['seller_id']), price: productHandle['price'], category_name: productHandle['category_name'] } } }
+            );
+
+            res.end();
+        } catch(e) {
+            console.log(e);
+            res.statusCode = 500;
+            res.end();
+        } finally {
             await client.close();
         }
     }
@@ -118,19 +176,36 @@ export default class ProductsController {
             }
             
             product['seller_id'] = userSession.user_id;
+            product['quantity'] = product['quantity'] ?? 1;
 
             const categories = db.collection('categories');
 
-            const category = await categories.findOne({name: product.category_name});
+            let category = await categories.findOne({name: product['category_name']});
             if(category === null) {
-                await categories.insertOne({name: product.category_name, products: []})
+                await categories.insertOne({name: product['category_name'], products: []});
+                category = await categories.findOne({name: product['category_name']});
             }
 
-            await categories.updateOne(
-                { name: product.category_name },
-                { $push: { products: product } }
-            );
-    
+            const storedProduct = category.products.find(p => {
+                return p.name === product['name']
+                    && p.seller_id.equals(product['seller_id'])
+                    && p.price === product['price'];
+            });
+
+            if(!storedProduct) {
+                await categories.updateOne(
+                    { name: product['category_name'] },
+                    { $push: { products: product } }
+                );
+            } else {
+                product['quantity'] += storedProduct['quantity'];
+                await categories.updateOne(
+                    { name: product['category_name'] },
+                    { $set: { "products.$[element].quantity": product['quantity'] } },
+                    { arrayFilters: [{ "element._id": storedProduct._id }] }
+                );
+            }
+
             res.end();
         } catch(e) {
             console.log(e);
@@ -164,6 +239,7 @@ export default class ProductsController {
     static registerRoutes(router) {
         router.get('/cart_products', requireAuth(this.getCartProducts));
         router.post('/cart_products', requireAuth(this.addProductToCart));
+        router.delete('/cart_products', requireAuth(this.deleteCartProducts));
 
         router.get('/products', requireAuth(this.getProducts));
         router.post('/products', requireAuth(this.addProduct));
