@@ -246,7 +246,7 @@ export default class ProductsController {
         const { db, client } = await connectToDb();
 
         try {
-            const productHandle = {...req.body};
+            const productHandle = {...req.params};
             productHandle['price'] = parseInt(productHandle['price']);
             const validInfo = productHandleValidator.validate(productHandle);
             if(!validInfo.valid) {

@@ -33,9 +33,9 @@ const server = http.createServer(async (req, res) => {
         throw new Error(`Request type ${req.method} not handled`);
     }
 
-    let url, data;
+    let url;
     try {
-        [url, data] = parseURL(req.url);
+        [url, req.params] = parseURL(req.url);
         // TODO: see if there's any use for the 'data' variable. Technically, it should not be treated as the body, but ¯\_(ツ)_/¯
     } catch(e) {
         res.statusCode = 400;
@@ -61,8 +61,6 @@ const server = http.createServer(async (req, res) => {
             res.statusCode = 400;
             return res.end(JSON.stringify(e));
         }
-    } else {
-        req.body = data;
     }
 
     try {
