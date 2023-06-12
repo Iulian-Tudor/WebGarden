@@ -1,6 +1,7 @@
 body {
-    background-color: #727b24;
+    background-color: #004000;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 .content {
@@ -79,9 +80,9 @@ body {
 }
 
 .selling-item {
-    cursor: pointer;
     display: flex;
     background-color: #00bf63;
+
     height: 150px;
     border-radius: 20px;
     overflow: hidden;

@@ -5,7 +5,9 @@ import { PORT, SESSION_TTL } from './settings.js';
 import Router from './Router.js';
 import RequestType from './RequestType.js';
 import { registerRoutes } from './routes.js';
-import { connectToDb } from './db.js';
+import { connectToDb } from './db/db.js';
+import parseBody from './parsers/BodyParser.js';
+import parseURL from './parsers/URLParser.js';
 
 const router = new Router();
 
@@ -22,6 +24,7 @@ registerRoutes(router);
     client.close();
 })();
 
+
 const server = http.createServer(async (req, res) => {
     const requestType = RequestType.fromString(req.method);
 
@@ -30,52 +33,43 @@ const server = http.createServer(async (req, res) => {
         throw new Error(`Request type ${req.method} not handled`);
     }
 
-    if(!router.exists(req.url, requestType)) {
-        try {
-            const data = await fs.promises.readFile('..' + req.url);
-            res.statusCode = 200;
-            res.end(data);
-        } catch(err) {
-            res.statusCode = 404;
-            res.end('Not found');
-        }
-        return;
+    let url;
+    try {
+        [url, req.params] = parseURL(req.url);
+        // TODO: see if there's any use for the 'data' variable. Technically, it should not be treated as the body, but ¯\_(ツ)_/¯
+    } catch(e) {
+        res.statusCode = 400;
+        return res.end();
     }
 
-    let bodyRaw = '';
-
-    req.on('data', chunk => bodyRaw += chunk);
-
-    req.on('end', () => {
+    if(!router.exists(url, requestType)) {
         try {
-            switch(req.headers['content-type']) {
-                case 'application/x-www-form-urlencoded':
-                    req.body = {};
-                    for(const pair of bodyRaw.split('&')) {
-                        const [key, value] = pair.split('=', 2).map(decodeURIComponent);
-                        req.body[key] = value;
-                    }
-                    break;
-                case 'application/json':
-                    req.body = JSON.parse(bodyRaw);
-                    break;
-            }
+            const data = await fs.promises.readFile('..' + url);
+            res.statusCode = 200;
+            return res.end(data);
+        } catch(err) {
+            res.statusCode = 404;
+            return res.end('Not found');
+        }
+    }
 
-        } catch(e) {
-            if(bodyRaw) {
-                // if body has been read partially
-                res.statusCode = 400;
-                res.end(JSON.stringify(e));
-                return;
-            }
-        }
+    if(requestType !== RequestType.GET) {
+        // the server shall ignore the body for GET, as per https://datatracker.ietf.org/doc/html/rfc7231#section-4.3.1
         try {
-            router.handle(req.url, requestType, req, res);
+            req.body = await parseBody(req);
         } catch(e) {
-            res.statusCode = 500;
-            res.end();
+            res.statusCode = 400;
+            return res.end(JSON.stringify(e));
         }
-    });
+    }
+
+    try {
+        router.handle(url, requestType, req, res);
+    } catch(e) {
+        console.log(e);
+        res.statusCode = 500;
+        return res.end();
+    }
 });
 
 server.listen(PORT, () => {
