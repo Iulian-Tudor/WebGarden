@@ -66,10 +66,11 @@ export default class ProductsController {
                 cart = await carts.findOne({user_id: userSession.user_id});
             }
 
-            const storedCartProduct = cart.products.find(p => {
+            const storedCartProduct = cart.products.find(product => {
                 return product.name === productHandle['name']
                     && product.seller_id.equals(productHandle['seller_id'])
-                    && product.price === productHandle['price'];
+                    && product.price === productHandle['price']
+                    && product.category_name === product['category_name'];
             });
 
             // decrement the quality
@@ -98,7 +99,12 @@ export default class ProductsController {
                 await carts.updateOne(
                     { user_id: new ObjectId(userSession.user_id) },
                     { $set: { "products.$[element].quantity": addedCount } },
-                    { arrayFilters: [{ "element._id": storedCartProduct._id }] }
+                    { arrayFilters: [{ 
+                        "element.name": storedCartProduct.name,
+                        "element.seller_id": storedCartProduct.seller_id,
+                        "element.price": storedCartProduct.price,
+                        "element.category_name": storedCartProduct.category_name 
+                    }] }
                 );
             }
 
