@@ -1,6 +1,6 @@
-import { connectToDb } from "../db.js";
+import { connectToDb } from "../db/db.js";
 import Validator from "../validator.js";
-import { requireAuth } from "../middlewares.js";
+import { requireAuth } from "../Utils/middlewares.js";
 import { ObjectId } from "mongodb";
 
 
@@ -81,12 +81,20 @@ export default class ProductsController {
 
             if(!storedCartProduct) {
                 const addedCount = Math.min(productHandle['quantity'], product['quantity']);
+                if(addedCount <= 0) {
+                    res.statusCode = 400;
+                    return res.end();
+                }
                 await carts.updateOne(
                     { user_id: userSession.user_id },
                     { $push: { products: {...product, quantity: addedCount} } }
                 );
             } else {
                 const addedCount = Math.min(storedCartProduct['quantity'] + productHandle['quantity'], product['quantity']);
+                if(addedCount <= 0) {
+                    res.statusCode = 400;
+                    return res.end();
+                }
                 await carts.updateOne(
                     { user_id: new ObjectId(userSession.user_id) },
                     { $set: { "products.$[element].quantity": addedCount } },
@@ -118,8 +126,6 @@ export default class ProductsController {
                 res.statusCode = 400;
                 return res.end(validInfo.serialize());
             }
-
-            console.log(productHandle);
 
             const carts = db.collection('carts');
 
@@ -236,6 +242,47 @@ export default class ProductsController {
         }
     }
 
+    static async getProduct(req, res) {
+        const { db, client } = await connectToDb();
+
+        try {
+            const productHandle = {...req.body};
+            productHandle['price'] = parseInt(productHandle['price']);
+            const validInfo = productHandleValidator.validate(productHandle);
+            if(!validInfo.valid) {
+                res.statusCode = 400;
+                return res.end(validInfo.serialize());
+            }
+
+            const categories = db.collection('categories');
+
+            const category = await categories.findOne({name: productHandle.category_name});
+            if(category === null) {
+                res.statusCode = 400;
+                return res.end('Category is not available');
+            }
+
+            const product = category.products.find(product => {
+                return product.name === productHandle['name']
+                    && product.seller_id.equals(productHandle['seller_id'])
+                    && product.price === productHandle['price'];
+            });
+            if(!product) {
+                res.statusCode = 400;
+                return res.end('Product is not available');
+            }
+
+            res.write(JSON.stringify(product));
+            res.end();
+        } catch(e) {
+            console.log(e);
+            res.statusCode = 500;
+            res.end();
+        } finally {
+            await client.close();
+        }
+    }
+
     static registerRoutes(router) {
         router.get('/cart_products', requireAuth(this.getCartProducts));
         router.post('/cart_products', requireAuth(this.addProductToCart));
@@ -243,5 +290,7 @@ export default class ProductsController {
 
         router.get('/products', requireAuth(this.getProducts));
         router.post('/products', requireAuth(this.addProduct));
+
+        router.get('/product', requireAuth(this.getProduct));
     }
 }

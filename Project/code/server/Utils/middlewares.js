@@ -1,4 +1,4 @@
-import { connectToDb } from "./db.js";
+import { connectToDb } from "../db/db.js";
 import cookie from 'cookie';
 
 function requireAuth(next) {

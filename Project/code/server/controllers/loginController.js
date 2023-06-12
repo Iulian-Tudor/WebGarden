@@ -1,4 +1,4 @@
-import { connectToDb } from '../db.js';
+import { connectToDb } from '../db/db.js';
 import { encrypt, decrypt } from '../Utils/cryptoUtils.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';

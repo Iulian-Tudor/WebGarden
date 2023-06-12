@@ -25,7 +25,7 @@ window.onload = async function() {
 
 function constructProductElement(product) {
     const template = `
-        <div class="selling-item" onclick="window.location.href='product.html'">
+        <div class="selling-item">
             <div class="img-wrapper">
                 <img src="" alt="">
             </div>
@@ -33,16 +33,14 @@ function constructProductElement(product) {
 
                 <div class="item-info">
                     <div class="item-content">
-                        <h3 class="title">
-                            Flower title
-                        </h3>
-                        <p class="description">
-                            Lorem ipsum dolor sit amet nesciunt illum magni nisi consectetur eveniet! Error, provident doloremque quos, deleniti corrupti explicabo officia, culpa hic sit totam debitis. Amet.
-                        </p>
-                    </div>
-                    <div class="item-price">$299.99</div>
-                </div>
+                        <a class="title-link" href="">
+                            <h3 class="title"></h3>
+                        </a>
 
+                        <p class="description"></p>
+                    </div>
+                    <div class="item-price"></div>
+                </div>
 
                 <div class="controls">
                     <button class="watch">
@@ -68,6 +66,21 @@ function constructProductElement(product) {
     element.querySelector('.title').textContent = product.name;
     element.querySelector('.description').textContent = product.user_description;
     element.querySelector('.item-price').textContent = product.price + '$';
+
+    const productHandle = getProductHandle(product);
+    
+    element.querySelector('.title-link').href = '/html/product.html?' + urlEncode(productHandle);
+
+    element.querySelector('.cart').onclick = async () => {
+        await fetch('/cart_products', {
+            method: 'POST',
+            body: JSON.stringify(productHandle),
+            headers: {
+                'content-type': 'application/json'
+            }
+        });
+        window.location.href = '/html/shopping_cart.html';
+    }
     
     return element;
 }
@@ -75,4 +88,23 @@ function constructProductElement(product) {
 async function retrieveCategories() {
     const res = await fetch('/products');
     return await res.json();
+}
+
+function getProductHandle(product) {
+    const productHandle = {
+        category_name: product.category_name,
+        name: product.name,
+        seller_id: product.seller_id,
+        price: product.price,
+    };
+    return productHandle;
+}
+
+function urlEncode(payload) {
+    const components = [];
+    for(const key in payload) {
+        const component = encodeURIComponent(key) + '=' + encodeURIComponent(payload[key]);
+        components.push(component); 
+    }
+    return components.join('&');
 }
