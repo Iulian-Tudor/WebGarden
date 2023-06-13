@@ -1,5 +1,7 @@
-window.onload = async function() {
-    const categories = await retrieveCategories();
+window.onload = main;
+
+async function main() {
+    await updateProducts();
 
     const menuButton = document.querySelector(".topbar .menu");
     menuButton.addEventListener('click', e => {
@@ -13,14 +15,62 @@ window.onload = async function() {
         }
     });
 
-    const itemsElement = document.querySelector(".items");
+    const filters = await getFilters();
 
-    for(const category of categories) {
-        for(const product of category.products) {
-            const element = constructProductElement(product);
-            itemsElement.append(element);
-        }
+    const sidebarEl = document.querySelector('.sidebar');
+
+    for(const {name, options} of filters) {
+        const filterItemEl = constructFilterItem(name, options);
+        sidebarEl.appendChild(filterItemEl);
     }
+
+    const searchBtn = document.querySelector('.search-btn');
+    searchBtn.addEventListener('click', updateProducts);
+}
+
+async function updateProducts() {
+    const queryData = getQueryData();
+    const query = urlEncode(queryData);
+
+    const products = await retrieveProducts(query);
+    const itemsElement = document.querySelector(".items");
+    itemsElement.innerHTML = '';
+    for(const product of products) {
+        const element = constructProductElement(product);
+        itemsElement.append(element);
+    }
+}
+
+function getQueryData() {
+    const filterItems = document.querySelectorAll('.sidebar .filter-item');
+
+    const queryData = {};
+
+    for(const filterItem of filterItems) {
+        const selectEl = filterItem.querySelector('select');
+        const selectedOption = selectEl.options[selectEl.selectedIndex];
+        if(selectedOption.value === 'default') {
+            continue;
+        }
+
+        const name = selectEl.name;
+        const value = selectedOption.text;
+        queryData[name] = value;
+    }
+
+    const searchInput = document.querySelector('.searchbar input');
+    queryData['name'] = searchInput.value.trim();
+    return queryData;
+}
+
+async function getFilters() {
+    const res = await fetch('/filters');
+    return await res.json();
+}
+
+function beautifyProperty(property) {
+    property = property.replace('_', ' ');
+    return property;
 }
 
 function constructProductElement(product) {
@@ -85,8 +135,38 @@ function constructProductElement(product) {
     return element;
 }
 
-async function retrieveCategories() {
-    const res = await fetch('/products');
+function constructFilterItem(name, options) {
+    const filterItem = document.createElement('div');
+    filterItem.classList.add('filter-item');
+
+    const labelEL = document.createElement('label');
+    labelEL.htmlFor = name;
+
+    const beautifulName = beautifyProperty(name);
+    labelEL.textContent = beautifulName[0].toUpperCase() + beautifulName.slice(1) + ':';
+    filterItem.appendChild(labelEL);
+
+    const selectEl = document.createElement('select');
+    selectEl.name = name;
+    selectEl.id = name;
+    filterItem.appendChild(selectEl);
+
+    const defaultOptionEl = document.createElement('option');
+    defaultOptionEl.value = 'default';
+    defaultOptionEl.text = 'Select ' + beautifyProperty(name);
+    selectEl.appendChild(defaultOptionEl);
+
+    for(const option of options) {
+        const optionEl = document.createElement('option');
+        optionEl.value = option;
+        optionEl.text = beautifyProperty(option);
+        selectEl.appendChild(optionEl);
+    }
+    return filterItem;
+}
+
+async function retrieveProducts(query) {
+    const res = await fetch('/products?' + query);
     return await res.json();
 }
 
