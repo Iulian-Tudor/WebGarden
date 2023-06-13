@@ -228,15 +228,100 @@ export default class ProductsController {
         }
     }
 
+    static async getFilters(req, res) {
+        const { db, client } = await connectToDb();
+        
+        try {
+            const categoriesCollection = db.collection('categories');
+
+            const categories = [];
+
+            const cursor = categoriesCollection.find({});
+            while(await cursor.hasNext()) {
+                categories.push(await cursor.next());
+            }
+
+            const categoryOptions = categories.map(category => category.name);
+            const optimalSoilOptions = categories.flatMap(category => category.products.map(product => product.flower_data.optimal_soil));
+            const seasonOptions = categories.flatMap(category => category.products.map(product => product.flower_data.season));
+
+            const filters = [
+                {
+                    name: 'category',
+                    options: [...new Set(categoryOptions)]
+                },
+                {
+                    name: 'optimal_soil',
+                    options: [...new Set(optimalSoilOptions)]
+                },
+                {
+                    name: 'season',
+                    options: [...new Set(seasonOptions)]
+                }
+            ];
+
+            return res.end(JSON.stringify(filters));
+        } catch(e) {
+            console.log(e);
+            res.statusCode = 500;
+            res.end();
+        } finally {
+            client.close();
+        }
+    }
+
     static async getProducts(req, res) {
         const { db, client } = await connectToDb();
 
-        // TODO: get by filters
+        const filters = {...req.params};
+
+        function nameMatch(completeName, name) {
+            completeName = completeName.toLowerCase();
+            name = name.toLowerCase();
+
+            let score = 0;
+
+            const completeTokens = completeName.split();
+            const tokens = [...new Set(name.split())];
+
+            for(const token of tokens) {
+                if(completeTokens.indexOf(token) !== -1) {
+                    score += 2;
+                } else if(completeName.indexOf(token) !== -1) {
+                    score += 1;
+                }
+            }
+            return score;
+        }
 
         try {
             const categories = db.collection('categories');
 
-            const products = await categories.find({}).toArray();
+            const allProducts = (await categories.find({}).toArray()).flatMap(category => category.products);
+
+            let products = allProducts.filter(p => {
+                return (!filters['category'] || filters['category'] === p.category_name)
+                    && (!filters['optimal_soil'] || filters['optimal_soil'] === p.flower_data.optimal_soil)
+                    && (!filters['season'] || filters['season'] === p.flower_data.season);
+            });
+
+            if(filters['name']) {
+                const scoreCache = new Map();
+                const searchName = filters['name'];
+    
+                products = products.sort((a, b) => {
+                    const key1 = JSON.stringify([a.name, searchName]);
+                    const key2 = JSON.stringify([b.name, searchName]);
+                    const score1 = scoreCache.has(key1) ? scoreCache.get(key1) : nameMatch(a.name, searchName);
+                    const score2 = scoreCache.has(key2) ? scoreCache.get(key2) : nameMatch(b.name, searchName);
+
+                    scoreCache.set(key1, score1);
+                    scoreCache.set(key2, score2);
+
+                    return score2 - score1;
+                });
+            }
+
             res.write(JSON.stringify(products));
             res.end();
         } catch(e) {
@@ -298,5 +383,7 @@ export default class ProductsController {
         router.post('/products', requireAuth(this.addProduct));
 
         router.get('/product', requireAuth(this.getProduct));
+        
+        router.get('/filters', requireAuth(this.getFilters));
     }
 }
