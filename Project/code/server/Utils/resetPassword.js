@@ -1,4 +1,4 @@
-import { connectToDb } from '../db.js';
+import { connectToDb } from '../db/db.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 import nodemailer from 'nodemailer';
