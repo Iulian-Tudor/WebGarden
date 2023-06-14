@@ -1,0 +1,2 @@
+-Reset password page and handling
+-login requires email to be verified

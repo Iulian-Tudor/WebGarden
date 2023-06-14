@@ -40,7 +40,7 @@ export async function requestPasswordReset(req, res) {
       from: 'support@example.com',
       to: sanitizedEmail,
       subject: 'Password Reset',
-      html: `<p>Click the link to reset your password: <a href="${process.env.RESET_LINK_BASE_URL}/reset-password/${resetToken}">Reset password</a></p>`
+      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/reset-password/${resetToken}">Reset password</a></p>`
     };
 
     await transporter.sendMail(content);
