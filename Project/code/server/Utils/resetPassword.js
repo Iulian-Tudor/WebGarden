@@ -37,7 +37,7 @@ export async function requestPasswordReset(req, res) {
     await db.collection('password_reset').insertOne({ token: resetToken, email: sanitizedEmail });
 
     const content = {
-      from: 'support@example.com',
+      from: process.env.EMAIL_USERNAME,
       to: sanitizedEmail,
       subject: 'Password Reset',
       html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/reset-password/${resetToken}">Reset password</a></p>`

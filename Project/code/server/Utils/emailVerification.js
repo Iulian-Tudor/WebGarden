@@ -6,7 +6,7 @@ import { connectToDb } from '../db/db.js';
 export async function sendVerificationEmail(sanitizedEmail, userId) {
 
     const token = jwt.sign(
-        { userId: userId},
+        { userId },
         process.env.JWT_SECRET,
         { expiresIn: "24h" }
     );
