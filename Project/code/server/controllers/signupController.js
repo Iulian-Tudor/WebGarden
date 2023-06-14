@@ -2,7 +2,7 @@ import { connectToDb } from '../db/db.js';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import sanitize from 'mongo-sanitize';
-import { sendVerificationEmail } from './Utils/emailVerification.js';
+import { sendVerificationEmail } from '../Utils/emailVerification.js';
 
 
 export async function registerUser(req, res) {
