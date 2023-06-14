@@ -41,7 +41,7 @@ export async function sendVerificationEmail(sanitizedEmail, userId) {
 }
 
 export async function verifyEmail(req, res) {
-    const { token } = req.query;
+    const { token } = req.params;
   
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
