@@ -1,5 +1,7 @@
 const PORT = 3000;
 
+const SESSION_TTL = 60 * 60 * 24 * 7; // 1 week
+
 const EMAIL_CONFIG = {
     host: "smtp.gmail.com",
     port: 587,
@@ -9,4 +11,4 @@ const EMAIL_CONFIG = {
     }
 }
 
-export { PORT, EMAIL_CONFIG };
+export { PORT, SESSION_TTL, EMAIL_CONFIG };

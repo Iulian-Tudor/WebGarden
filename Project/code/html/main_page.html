@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../styles/root.css">
     <link rel="stylesheet" href="../styles/main_page.css">
     <link rel="stylesheet" href="../styles/topbar.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet">
+
     <script src="../scripts/main_page.js" defer></script>
 </head>
 <body>
@@ -18,35 +23,44 @@
                     <img src="../icons/menu.png" alt="">
                 </div>
             </div>
-            <div class="topbar-item logo" onclick="window.location.href='main_page.html'">
+            <div class="topbar-item logo">
+                <a href="/html/main_page.html">
+                    <div class="img-wrapper">
+                        <img src="../icons/logo.webp" alt="">
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="topbar-item">
+            <a href="/html/mygarden.html">
                 <div class="img-wrapper">
-                    <img src="../icons/logo.webp" alt="">
+                    <img src="../icons/garden.png" alt="">
                 </div>
-            </div>
+                <div class="item-title">
+                    My Garden
+                </div>
+            </a>
         </div>
-        <div class="topbar-item" onclick="window.location.href='mygarden.html'">
-            <div class="img-wrapper">
-                <img src="../icons/garden.png" alt="">
-            </div>
-            <div class="item-title">
-                My Garden
-            </div>
+        <div class="topbar-item">
+            <!-- TODO: replace onclick with <a> in every place the topbar is used -->
+            <a href="/html/shopping_cart.html">
+                <div class="img-wrapper">
+                    <img src="../icons/shopping.png" alt="">
+                </div>
+                <div class="item-title">
+                    Shopping Cart
+                </div>
+            </a>
         </div>
-        <div class="topbar-item" onclick="window.location.href='shopping_cart.html'">
-            <div class="img-wrapper">
-                <img src="../icons/shopping.png" alt="">
-            </div>
-            <div class="item-title">
-                Shopping Cart
-            </div>
-        </div>
-        <div class="topbar-item" onclick="window.location.href='main_page.html'">
-            <div class="img-wrapper">
-                <img src="../icons/account.png" alt="">
-            </div>
-            <div class="item-title">
-                My Account
-            </div>
+        <div class="topbar-item">
+            <a href="/html/myaccount.html">
+                <div class="img-wrapper">
+                    <img src="../icons/account.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Account
+                </div>
+            </a>
         </div>
     </div>
 
@@ -54,34 +68,13 @@
         <div class="sidebar sidebar-closed">
             <div class="searchbar">
                 <input type="text">
-                <button>
+                <button class="search-btn">
                     <div class="img-wrapper">
                         <img src="../icons/search.png" alt="">
                     </div>
                 </button>
             </div>
 
-            <div class="filter-item">
-                <label for="colors">Color:</label>
-                <select name="colors" id="colors">
-                    <option value="default">Select Color</option>
-                    <option value="Red">Red</option>
-                    <option value="Yellow">Yellow</option>
-                    <option value="Blue">Blue</option>
-                    <option value="Purple">Purple</option>
-                </select>
-            </div>
-
-            <div class="filter-item">
-                <label for="types">Type:</label>
-                <select name="types" id="types">
-                    <option value="default">Select Type</option>
-                    <option value="Spring">Spring</option>
-                    <option value="Summer">Summer</option>
-                    <option value="Autumn">Autumn</option>
-                    <option value="Winter">Winter</option>
-                </select>
-            </div>
         </div>
     
         <div class="main-container">

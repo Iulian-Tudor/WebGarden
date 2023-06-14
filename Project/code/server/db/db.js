@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 const uri = 'mongodb://localhost:27017';
-const dbName = 'myDatabase';
+const dbName = 'garden';
 
 export async function connectToDb() {
   const client = new MongoClient(uri, { useUnifiedTopology: true });

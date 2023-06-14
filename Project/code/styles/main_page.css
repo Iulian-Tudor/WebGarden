@@ -1,6 +1,7 @@
 body {
-    background-color: #727b24;
+    background-color: #004000;
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 .content {
@@ -35,12 +36,13 @@ body {
 .searchbar input {
     border: none;
     width: 100%;
+    padding: 0 20px;
 }
 
 .sidebar button {
     padding: 4px;
     margin: 0;
-    background-color: blue;
+    background-color: #00bf63;
 }
 
 .sidebar .img-wrapper {
@@ -79,9 +81,9 @@ body {
 }
 
 .selling-item {
-    cursor: pointer;
     display: flex;
     background-color: #00bf63;
+
     height: 150px;
     border-radius: 20px;
     overflow: hidden;
