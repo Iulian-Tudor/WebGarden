@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { ObjectId } from 'mongodb';
-import { connectToDb } from '../db.js';
+import { connectToDb } from '../db/db.js';
 
 export async function sendVerificationEmail(sanitizedEmail, userId) {
 
