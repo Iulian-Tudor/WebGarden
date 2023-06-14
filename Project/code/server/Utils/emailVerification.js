@@ -13,10 +13,11 @@ export async function sendVerificationEmail(sanitizedEmail, userId) {
       );
       
     const transporter = nodemailer.createTransport({
-        service: "gmail",
+        service: "smtp.mailtrap.io",
+        port: 587,
         auth: {
           user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD
+          pass: process.env.EMAIL_PASSWORD 
         }
       });
       
