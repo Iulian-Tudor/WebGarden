@@ -1,6 +1,5 @@
 body {
     margin: 0;
-    background-color: #727b24;
 }
 
 .wrapper {
@@ -41,6 +40,14 @@ body {
     color: white;
     font-size: 23px;
     padding: 0 10px;
+}
+
+.topbar-item > a {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
 }
 
 .topbar-item .img-wrapper {

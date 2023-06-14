@@ -1,7 +1,9 @@
-import { connectToDb } from '../db.js';
+import { connectToDb } from '../db/db.js';
+import { encrypt, decrypt } from '../Utils/cryptoUtils.js';
 import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 import cookie from 'cookie';
+import { SESSION_TTL } from '../settings.js';
 
 export async function loginUser(req, res) {
   const { email, password } = req.body;
@@ -33,13 +35,16 @@ export async function loginUser(req, res) {
     }
 
     // If everything is correct, return a success message
-    // TODO: crypt the token to be sent to the user (crypt, not hash)
-    const userCookie = cookie.serialize('user_email', sanitizedEmail, {
+    const encryptedEmail = encrypt(sanitizedEmail);
+    const userCookie = cookie.serialize('X-WEBGA-TOKEN', encryptedEmail, {
       httpOnly: true,
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      maxAge: SESSION_TTL,
       path: '/',
     });
-  
+    
+    // TODO: verificare daca deja exista acea sesiune. Si daca da... i guess update it?
+    await db.collection('user_sessions').insertOne({token: encryptedEmail, user_id: user._id, createdAt: new Date()});
+    
     res.setHeader('Set-Cookie', userCookie);
     res.statusCode = 200;
     res.end('Login successful');

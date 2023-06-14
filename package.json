@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
+    "mailtrap": "^3.1.1",
+    "uuid": "^9.0.0"
+  }
+}

@@ -1,15 +1,34 @@
-import cookie from 'cookie';
+import { connectToDb } from '../db/db.js';
 
-function logoutUser(req, res) {
-  const clearCookie = cookie.serialize('user_email', '', {
-    httpOnly: true,
-    maxAge: -1, // Clear the cookie immediately
-    path: '/',
-  });
+async function logoutUser(req, res) {
+  // Get the encrypted email from the cookie
+  const cookies = cookie.parse(req.headers.cookie || '');
+  const encryptedEmail = cookies['X-WEBGA-TOKEN'];
 
-  res.setHeader('Set-Cookie', clearCookie);
-  res.statusCode = 200;
-  res.end('Logout successful');
+  // Connect to the database
+  const { db, client } = await connectToDb();
+
+  try {
+    // Delete the user session from the database
+    await db.collection('user_sessions').deleteOne({ token: encryptedEmail });
+
+    // Clear the cookie
+    const clearCookie = cookie.serialize('X-WEBGA-TOKEN', '', {
+      httpOnly: true,
+      maxAge: -1,
+      path: '/',
+    });
+
+    res.setHeader('Set-Cookie', clearCookie);
+    res.statusCode = 200;
+    res.end('Logout successful');
+  } catch (error) {
+    console.log(error);
+    res.statusCode = 500;
+    res.end('Internal server error');
+  } finally {
+    client.close();
+  }
 }
 
 export { logoutUser };

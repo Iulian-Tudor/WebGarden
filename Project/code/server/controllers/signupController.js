@@ -1,12 +1,12 @@
-import { connectToDb } from '../db.js';
+import { connectToDb } from '../db/db.js';
 import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 import sanitize from 'mongo-sanitize';
-import nodemailer from 'nodemailer';
-import jwt from 'jsonwebtoken';
+import { sendVerificationEmail } from './Utils/emailVerification.js';
 
 
 export async function registerUser(req, res) {
+  // TODO: verificare daca nu exista deja contul
   try {
     const { email, username, password } = req.body;
 
@@ -34,9 +34,20 @@ export async function registerUser(req, res) {
 
     // Connect to the database and create a new user
     const { db, client } = await connectToDb();
+    const existingUser = await db.collection('users').findOne({
+      $or: [{ email: sanitizedEmail }, { username: sanitizedUsername }],
+    });
+
+    if (existingUser) {
+      res.statusCode = 400;
+      res.end(JSON.stringify({ message: 'Email or username already taken' }));
+      return;
+    }
+
     const hashedPassword = await bcryptjs.hash(password, 10);
-    const newUser = { email: sanitizedEmail, username: sanitizedUsername, password: hashedPassword };
+    const newUser = { email: sanitizedEmail, username: sanitizedUsername, password: hashedPassword, verified: false };
     const result = await db.collection('users').insertOne(newUser);
+    await sendVerificationEmail(sanitizedEmail, result.insertedId);
     client.close();
   
     res.statusCode = 201;

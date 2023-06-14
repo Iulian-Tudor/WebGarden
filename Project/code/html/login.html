@@ -12,24 +12,26 @@
         <div class="login-box">
             <p class="title">Log In</p>
             <hr>
-            <div class="main-content">
-                <div class="labels-container">
-                    <label class="login-label">Email/Username:</label>
-                    <label class="login-label">Password:</label>
+            <form action="/login" method="post">
+                <div class="main-content">
+                    <div class="labels-container">
+                        <label class="login-label">Email/Username:</label>
+                        <label class="login-label">Password:</label>
+                    </div>
+                    <div class="input-container">
+                        <input class="input-box" type="text" name="email">
+                        <input class="input-box" type="password" name="password">
+                        <button class="forgot-pass-button" onclick="window.location.href = 'reset.html'">I forgot my password</button>
+                    </div>
                 </div>
-                <div class="input-container">
-                    <input class="input-box" type="text" name="email">
-                    <input class="input-box" type="password" name="password">
-                    <button class="forgot-pass-button" onclick="window.location.href = 'reset.html'">I forgot my password</button>
+                <div class="remember-me-container">
+                    <input type="checkbox" id="remember-me-checkbox">
+                    <label id="remember-me-label" for="remember-me-checkbox">Forget me not</label>
                 </div>
-            </div>
-            <div class="remember-me-container">
-                <input type="checkbox" id="remember-me-checkbox">
-                <label id="remember-me-label" for="remember-me-checkbox">Forget me not</label>
-            </div>
-            <div class="button-container">
-                <button class="big-button">Enter</button>
-            </div>
+                <div class="button-container">
+                    <button type="submit" class="big-button">Enter</button>
+                </div>
+            </form>
             <div class="final-paragraph">
                 <p style="color:white">Don't have an account? <button class="signup-button" onclick="window.location.href= 'signup.html';"><u>Sign up</u></button></p>
             </div>
