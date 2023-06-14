@@ -10,18 +10,6 @@ import { connectToDb } from './db.js';
 
 const router = new Router();
 
-
-connectToDb().then(async ({ db }) => {
-    const flowers = db.collection('flowers').find({});
-    const flower = await flowers.next();
-    console.log(flower);
-
-    const categories = db.collection('categories').find({"_id": flower.category_id});
-    const category = await categories.next();
-    console.log(category);
-});
-
-
 registerRoutes(router);
 
 // function isAuthenticated(req) {
