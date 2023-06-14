@@ -1,43 +1,46 @@
-// emailVerification.js
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import { ObjectId } from 'mongodb';
 import { connectToDb } from '../db.js';
 
 export async function sendVerificationEmail(sanitizedEmail, userId) {
-    
+
     const token = jwt.sign(
         { userId: result.insertedId },
         process.env.JWT_SECRET,
         { expiresIn: "24h" }
-      );
-      
+    );
+
     const transporter = nodemailer.createTransport({
-        service: "smtp.mailtrap.io",
+        host: 'smtp-mail.outlook.com',
+        secureConnection: false,
         port: 587,
+        tls: {
+            ciphers: 'SSLv3'
+        },
         auth: {
-          user: process.env.EMAIL_USERNAME,
-          pass: process.env.EMAIL_PASSWORD 
+            user: process.env.EMAIL_USERNAME,
+            pass: process.env.EMAIL_PASSWORD
         }
-      });
-      
-      const verificationLink = `${process.env.BASE_URL}/verify-email?token=${token}`;
-      
-      const mailOptions = {
+    });
+
+    const verificationLink = `${process.env.BASE_URL}/verify-email?token=${token}`;
+
+    const mailOptions = {
         from: process.env.EMAIL_USERNAME,
         to: sanitizedEmail,
         subject: "Email Verification",
         html: `<p>Please click the link below to verify your email address:</p><a href="${verificationLink}">${verificationLink}</a>`
-      };
-      
-      transporter.sendMail(mailOptions, (error, info) => {
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
-          console.log(error);
+            console.log(error);
         } else {
-          console.log("Email sent: " + info.response);
+            console.log("Email sent: " + info.response);
         }
-      });
-      
+    });
+
 }
 
 export async function verifyEmail(req, res) {
