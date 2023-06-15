@@ -41,7 +41,7 @@ export async function requestPasswordReset(req, res) {
       from: process.env.EMAIL_USERNAME,
       to: sanitizedEmail,
       subject: 'Password Reset',
-      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/reset-password.html?token=${resetToken}">Reset password</a></p>`
+      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/resetPass.html?token=${resetToken}">Reset password</a></p>`
     };
     
 
