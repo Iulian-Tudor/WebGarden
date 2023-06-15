@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { parse } from 'querystring';
 
 function generateUniqueToken() {
   return crypto.randomBytes(32).toString('hex');
@@ -40,8 +41,9 @@ export async function requestPasswordReset(req, res) {
       from: process.env.EMAIL_USERNAME,
       to: sanitizedEmail,
       subject: 'Password Reset',
-      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/reset-password/${resetToken}">Reset password</a></p>`
+      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/reset-password.html?token=${resetToken}">Reset password</a></p>`
     };
+    
 
     await transporter.sendMail(content);
     res.statusCode = 200;
@@ -55,32 +57,41 @@ export async function requestPasswordReset(req, res) {
   }
 }
 
+
 export async function resetPassword(req, res) {
-  const { token, newPassword } = req.body;
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+  req.on('end', async () => {
+    const formData = parse(body);
+    const { token, newPassword } = formData;
 
-  const { db, client } = await connectToDb();
+    const { db, client } = await connectToDb();
 
-  try {
-    const resetEntry = await db.collection('password_reset').findOne({ token });
+    try {
+      const resetEntry = await db.collection('password_reset').findOne({ token });
 
-    if (!resetEntry) {
-      res.statusCode = 400;
-      res.end('Invalid token');
-      return;
+      if (!resetEntry) {
+        res.statusCode = 400;
+        res.end('Invalid token');
+        return;
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      await db.collection('users').updateOne({ email: resetEntry.email }, { $set: { password: hashedPassword } });
+
+      await db.collection('password_reset').deleteOne({ token });
+
+      res.statusCode = 200;
+      res.end('Password reset successfully');
+    } catch (error) {
+      console.error(error);
+      res.statusCode = 500;
+      res.end('Internal server error');
+    } finally {
+      client.close();
     }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await db.collection('users').updateOne({ email: resetEntry.email }, { $set: { password: hashedPassword } });
-
-    await db.collection('password_reset').deleteOne({ token });
-
-    res.statusCode = 200;
-    res.end('Password reset successfully');
-  } catch (error) {
-    console.error(error);
-    res.statusCode = 500;
-    res.end('Internal server error');
-  } finally {
-    client.close();
-  }
+  });
 }
+
