@@ -1,1 +1,1 @@
--Reset password page and handling
+make redirect pages for [email sent], [password has been reset], [login successfully]
