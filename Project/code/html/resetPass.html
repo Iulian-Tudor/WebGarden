@@ -29,15 +29,17 @@
   </script>
 </head>
 <body>
-  <div class="reset-password-container">
-    <h1>Reset Password</h1>
-    <p id="error" class="error-message" hidden>Error: Invalid or missing token.</p>
-    <form method="POST" action="/reset-password">
-      <input type="hidden" id="resetToken" name="token" />
-      <label for="newPassword">New Password:</label>
-      <input id="newPassword" type="password" name="newPassword" required>
-      <input type="submit" value="Submit">
-    </form>
-  </div>
+    <div class="center-container">
+        <div class="reset-password-container">
+            <h1>Reset Password</h1>
+            <p id="error" class="error-message" hidden>Error: Invalid or missing token.</p>
+            <form method="POST" action="/reset-password">
+                <input type="hidden" id="resetToken" name="token" />
+                <label for="newPassword">New Password:</label>
+                <input id="newPassword" type="password" name="newPassword" required>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+    </div>
 </body>
 </html>
