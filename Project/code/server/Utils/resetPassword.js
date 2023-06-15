@@ -41,7 +41,7 @@ export async function requestPasswordReset(req, res) {
       from: process.env.EMAIL_USERNAME,
       to: sanitizedEmail,
       subject: 'Password Reset',
-      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/resetPass.html?token=${resetToken}">Reset password</a></p>`
+      html: `<p>Click the link to reset your password: <a href="${process.env.BASE_URL}/html/resetPass.html?token=${resetToken}">Reset password</a></p>`
     };
     
 
@@ -59,12 +59,8 @@ export async function requestPasswordReset(req, res) {
 
 
 export async function resetPassword(req, res) {
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-  req.on('end', async () => {
-    const formData = parse(body);
+  
+    const formData = req.body;
     const { token, newPassword } = formData;
 
     const { db, client } = await connectToDb();
@@ -92,6 +88,6 @@ export async function resetPassword(req, res) {
     } finally {
       client.close();
     }
-  });
-}
+  };
+
 
