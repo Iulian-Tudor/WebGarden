@@ -63,12 +63,12 @@ export async function loginUser(req, res) {
         createdAt: new Date(),
       });
     }
-
-    
+  
     
     res.setHeader('Set-Cookie', userCookie);
-    res.statusCode = 200;
-    res.end('Login successful');
+    res.setHeader('Location', '/html/main_page.html'); // Set the Location header to the desired redirect path
+    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.end();
 
     
   } catch (error) {
