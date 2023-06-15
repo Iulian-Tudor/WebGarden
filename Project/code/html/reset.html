@@ -18,8 +18,8 @@
 		<div class="element-main">
 			<h1>Forgot Password</h1>
 			<p> You will be soon receive a mail with a form to change your password. Memorize it well this time.</p>
-			<form>
-				<input type="text" value="Your e-mail address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your e-mail address';}">
+			<form method="POST" action="/request-password-reset">
+				<input type="text" name="email" value="Your e-mail address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your e-mail address';}">
 				<input type="submit" value="Reset my Password">
 			</form>
 		</div>

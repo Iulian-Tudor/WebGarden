@@ -6,7 +6,7 @@ import { sendVerificationEmail } from '../Utils/emailVerification.js';
 
 
 export async function registerUser(req, res) {
-  // TODO: verificare daca nu exista deja contul
+  // DONE: verificare daca nu exista deja contul
   try {
     const { email, username, password } = req.body;
 
@@ -30,7 +30,7 @@ export async function registerUser(req, res) {
       res.end(JSON.stringify({ message: 'Password must be at least 6 characters long' }));
       return;
     }
-    //const sanitizedPassword = sanitize(password);
+    
 
     // Connect to the database and create a new user
     const { db, client } = await connectToDb();

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password</title>
+  <link rel="stylesheet" href="../styles/resetPass.css">
+  <script>
+    function setResetToken(token) {
+      const resetTokenInput = document.getElementById('resetToken');
+      resetTokenInput.value = token;
+    }
+
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const token = getQueryParam('token');
+      const errorElement = document.getElementById('error');
+
+      if (token) {
+        setResetToken(token);
+      } else {
+        errorElement.hidden = false;
+      }
+    });
+  </script>
+</head>
+<body>
+  <div class="reset-password-container">
+    <h1>Reset Password</h1>
+    <p id="error" class="error-message" hidden>Error: Invalid or missing token.</p>
+    <form method="POST" action="/reset-password">
+      <input type="hidden" id="resetToken" name="token" />
+      <label for="newPassword">New Password:</label>
+      <input id="newPassword" type="password" name="newPassword" required>
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+</body>
+</html>
