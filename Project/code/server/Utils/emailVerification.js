@@ -42,12 +42,14 @@ export async function sendVerificationEmail(sanitizedEmail, userId) {
 
 export async function verifyEmail(req, res) {
     const { token } = req.params;
+    const { token } = req.params;
   
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const { userId } = decoded;
   
       const { db, client } = await connectToDb();
+      const user = await db.collection("users").findOne({ _id: new ObjectId(userId) });
       const user = await db.collection("users").findOne({ _id: new ObjectId(userId) });
   
       if (!user) {
@@ -63,6 +65,7 @@ export async function verifyEmail(req, res) {
       }
   
       await db.collection("users").updateOne(
+        { _id: new ObjectId(userId) },
         { _id: new ObjectId(userId) },
         { $set: { verified: true } }
       );
