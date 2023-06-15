@@ -25,6 +25,12 @@ export async function loginUser(req, res) {
       return;
     }
 
+    if (!user.verified) {
+      res.statusCode = 401;
+      res.end('Email not verified');
+      return;
+    }
+
     // Compare the hashed password with the given password
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
 
@@ -42,12 +48,27 @@ export async function loginUser(req, res) {
       path: '/',
     });
     
-    // TODO: verificare daca deja exista acea sesiune. Si daca da... i guess update it?
-    await db.collection('user_sessions').insertOne({token: encryptedEmail, user_id: user._id, createdAt: new Date()});
+    // DONE: verificare daca deja exista acea sesiune. Si daca da... i guess update it?
+    const existingSession = await db.collection('user_sessions').findOne({ user_id: user._id });
+
+    if (existingSession) {
+      await db.collection('user_sessions').updateOne(
+        { user_id: user._id },
+        { $set: { token: encryptedEmail, createdAt: new Date() } }
+      );
+    } else {
+      await db.collection('user_sessions').insertOne({
+        token: encryptedEmail,
+        user_id: user._id,
+        createdAt: new Date(),
+      });
+    }
+  
     
     res.setHeader('Set-Cookie', userCookie);
-    res.statusCode = 200;
-    res.end('Login successful');
+    res.setHeader('Location', '/html/main_page.html'); // Set the Location header to the desired redirect path
+    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.end();
 
     
   } catch (error) {

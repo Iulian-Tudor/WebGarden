@@ -13,19 +13,25 @@
             <p class="title">Sign Up!</p>
             <hr>
             <div class="main-content">
-                <div class="labels-container">
-                    <label class="signup-label">Email:</label>
-                    <label class="signup-label">Password:</label>
-                    <label class="signup-label">Username:</label>
-                </div>
-                <div class="input-container">
-                    <input class="input-box" type="text">
-                    <input class="input-box" type="password">
-                    <input class="input-box" type="text">
-                </div>
-            </div>
-            <div class="button-container">
-                <button class="big-button">Create Account</button>
+                <form id="signup-form">
+                    <div class="labels-container">
+                        <div>
+                            <label class="signup-label">Email:</label>
+                            <input id="email" class="input-container" type="text">
+                        </div>
+                        <div>
+                            <label class="signup-label">Password:</label>
+                            <input id="password" class="input-container" type="password">
+                        </div>
+                        <div>
+                            <label class="signup-label">Username:</label>
+                            <input id="username" class="input-container" type="text">
+                        </div>
+                    </div>
+                    <div class="button-container">
+                        <button type="submit" class="big-button">Create Account</button>
+                    </div>
+                </form>
             </div>
             <div class="final-paragraph">
                 <p>Already have an account? <button class="login-button" onclick="window.location.href= 'login.html';"><u>Log in</u></button></p>
