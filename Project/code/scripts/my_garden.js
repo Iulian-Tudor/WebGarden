@@ -1,24 +1,31 @@
 window.onload = function(){
     const popupElement = document.querySelector(".flower-details-container");
     const closeButton = document.querySelector(".close-button");
-    closeButton.addEventListener('click', e => {
-        if(popupElement.classList.contains("popup-open")){
-            popupElement.classList.remove("popup-open");
-            popupElement.classList.add("popup-closed");
-        }
-        else{
-            popupElement.classList.remove("popup-closed");
-            popupElement.classList.add("popup-open");
-        }
-    });
+    closeButton.addEventListener('click', closePopup);
+    document.querySelector('.flower-details-container').addEventListener('click', closePopup);
 
     const actionButtons = document.querySelectorAll(".notification-button");
     actionButtons.forEach(button => {
-        button.addEventListener("click", e =>{
-            popupElement.classList.remove("popup-closed");
-            popupElement.classList.add("popup-open");
-        })
+        button.addEventListener("click", openPopup);
     })
+}
+
+function closePopup(e) {
+    if(e.target !== document.querySelector('.flower-details-container') && 
+       e.target !== document.querySelector('.close-button')) {
+        return;
+    }
+    const popupElement = document.querySelector(".flower-details-container");
+    if(popupElement.classList.contains("popup-open")){
+        popupElement.classList.remove("popup-open");
+        popupElement.classList.add("popup-closed");
+    }
+}
+
+function openPopup() {
+    const popupElement = document.querySelector(".flower-details-container");
+    popupElement.classList.remove("popup-closed");
+    popupElement.classList.add("popup-open");
 }
 
 function createNotification(img, desc)

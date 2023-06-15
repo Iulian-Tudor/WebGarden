@@ -1,3 +1,2 @@
-- verificare field 'verified' in db la requireAuth
-- modificare sa se faca redirect cu <a>, nu cu href
-- modificare product schema
+- export csv produse
+- adaugat topbar si la single product page

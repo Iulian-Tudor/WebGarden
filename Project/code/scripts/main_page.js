@@ -4,16 +4,7 @@ async function main() {
     await updateProducts();
 
     const menuButton = document.querySelector(".topbar .menu");
-    menuButton.addEventListener('click', e => {
-        const sidebar = document.querySelector('.sidebar');
-        if(sidebar.classList.contains('sidebar-closed')) {
-            sidebar.classList.remove('sidebar-closed');
-            sidebar.classList.add('sidebar-open');
-        } else {
-            sidebar.classList.remove('sidebar-open');
-            sidebar.classList.add('sidebar-closed');
-        }
-    });
+    menuButton.addEventListener('click', toggleSidebar);
 
     const filters = await getFilters();
 
@@ -25,7 +16,21 @@ async function main() {
     }
 
     const searchBtn = document.querySelector('.search-btn');
-    searchBtn.addEventListener('click', updateProducts);
+    searchBtn.addEventListener('click', async () => {
+        await updateProducts();
+        toggleSidebar();
+    });
+}
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    if(sidebar.classList.contains('sidebar-closed')) {
+        sidebar.classList.remove('sidebar-closed');
+        sidebar.classList.add('sidebar-open');
+    } else {
+        sidebar.classList.remove('sidebar-open');
+        sidebar.classList.add('sidebar-closed');
+    }
 }
 
 async function updateProducts() {
