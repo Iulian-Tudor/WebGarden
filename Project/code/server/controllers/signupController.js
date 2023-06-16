@@ -50,8 +50,9 @@ export async function registerUser(req, res) {
     await sendVerificationEmail(sanitizedEmail, result.insertedId);
     client.close();
   
-    res.statusCode = 201;
-    res.end(JSON.stringify({ message: 'User registered successfully', result }));
+    res.setHeader('Location', '/html/checkEmail.html'); // Set the Location header to the desired redirect path
+    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.end();
   } catch (error) {
     console.log(error);
     res.statusCode = 500;
