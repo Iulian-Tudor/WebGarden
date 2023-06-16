@@ -20,8 +20,9 @@ async function logoutUser(req, res) {
     });
 
     res.setHeader('Set-Cookie', clearCookie);
-    res.statusCode = 200;
-    res.end('Logout successful');
+    res.setHeader('Location', '/html/login.html'); // Set the Location header to the desired redirect path
+    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.end();
   } catch (error) {
     console.log(error);
     res.statusCode = 500;
