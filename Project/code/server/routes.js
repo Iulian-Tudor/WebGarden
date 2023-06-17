@@ -7,6 +7,8 @@ import { requestPasswordReset, resetPassword } from './Utils/resetPassword.js';
 import { handleNotifications } from "./notifications.js";
 import { handleWatchlist } from "./watchlist.js";
 import { handlePlantedFlowers, handleReadyFlowers } from "./plantedFlowers.js";
+import { getNotification } from "./controllers/notificationController.js";
+import { requireAuth } from "./Utils/middlewares.js";
 
 
 function registerRoutes(router) {
@@ -27,7 +29,7 @@ function registerRoutes(router) {
     router.post('/request-password-reset', requestPasswordReset);
     router.post('/reset-password', resetPassword);
     ProductsController.registerRoutes(router);
-    router.get('/notifs', handleNotifications);
+    router.get('/notifs', requireAuth(getNotification));
     router.get('/watchlist', handleWatchlist);
     router.get('/plantedFlowers', handlePlantedFlowers);
     router.get('/readyFlowers', handleReadyFlowers);

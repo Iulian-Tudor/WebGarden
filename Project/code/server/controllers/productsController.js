@@ -11,11 +11,11 @@ const productValidator = new Validator()
     .addRule('user_description', 'string', null)
     .addRule('image_url', 'string', null)
     .addRule('flower_data', 'object', new Validator()
-        .addRule('season', 'string', null))
+        .addRule('season', 'string', null)
         .addRule('optimal_parameters', 'object', new Validator()
             .addRule('soil', 'string', null)
             .addRule('humidity', 'number', null)
-            .addRule('temperature', 'number', null));
+            .addRule('temperature', 'number', null)));
 
 
 const productHandleValidator = new Validator()
