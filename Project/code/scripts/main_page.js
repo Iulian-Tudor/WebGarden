@@ -124,7 +124,7 @@ function constructProductElement(product) {
 
     const productHandle = getProductHandle(product);
     
-    element.querySelector('.title-link').href = '/html/product.html?' + urlEncode(productHandle);
+    element.querySelector('.title-link').href = '/html/product.html?flower_id=' + product._id;
 
     element.querySelector('.cart').onclick = async () => {
         await fetch('/cart_products', {

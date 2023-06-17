@@ -22,17 +22,17 @@ function createNotification(img, desc, emoji) {
     return notif;
 }
 
-
-
 async function receiveNotifications() {
     const response = await fetch("/notifs");
     const data = await response.json();
     return data;
 }
 
+
 async function updateNotifications() {
 
     const notifList = await receiveNotifications();
+
 
     const my_flowers_div = document.getElementById('my-flowers');
 

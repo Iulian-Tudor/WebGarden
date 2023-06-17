@@ -67,7 +67,6 @@ export async function verifyEmail(req, res) {
   
       await db.collection("users").updateOne(
         { _id: new ObjectId(userId) },
-        //{ _id: new ObjectId(userId) },
         { $set: { verified: true } }
       );
   

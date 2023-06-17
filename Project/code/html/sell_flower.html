@@ -7,6 +7,7 @@
     <title>Put up a new flower for sale</title>
     <link rel="stylesheet" href="../styles/topbar.css">
     <link rel="stylesheet" href="../styles/sell-flower.css">
+    <script src="../scripts/sell_flower.js"></script>
 </head>
 
 <body>
@@ -14,58 +15,87 @@
         <div class="topbar">
             <div class="wrapper">
                 <div class="topbar-item logo">
+                    <a href="/html/main_page.html">
+                        <div class="img-wrapper">
+                            <img src="../icons/logo.webp" alt="">
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="topbar-item">
+                <a href="/html/main_page.html">
                     <div class="img-wrapper">
-                        <img src="../icons/logo.webp" alt="">
+                        <img src="../icons/garden.png" alt="">
                     </div>
-                </div>
+                    <div class="item-title">
+                        My Garden
+                    </div>
+                </a>
             </div>
             <div class="topbar-item">
-                <div class="img-wrapper">
-                    <img src="../icons/garden.png" alt="">
-                </div>
-                <div class="item-title">
-                    My Garden
-                </div>
+                <a href="/html/mygarden.html">
+                    <div class="img-wrapper">
+                        <img src="../icons/shopping.png" alt="">
+                    </div>
+                    <div class="item-title">
+                        Shopping Cart
+                    </div>
+                </a>
             </div>
             <div class="topbar-item">
-                <div class="img-wrapper">
-                    <img src="../icons/shopping.png" alt="">
-                </div>
-                <div class="item-title">
-                    Shopping Cart
-                </div>
-            </div>
-            <div class="topbar-item">
-                <div class="img-wrapper">
-                    <img src="../icons/account.png" alt="">
-                </div>
-                <div class="item-title">
-                    My Account
-                </div>
+                <a href="/html/myaccount.html">
+                    <div class="img-wrapper">
+                        <img src="../icons/account.png" alt="">
+                    </div>
+                    <div class="item-title">
+                        My Account
+                    </div>
+                </a>
             </div>
         </div>
+
         <div class="main-container">
             <p class="title">Ce floare vrei să vinzi?</p>
-            <div class="details-container">
-                <label class="flower-label">Nume:</label>
-                <input class="input-box" type="text" name="nume">
-                <label class="flower-label">Descriere:</label>
-                <textarea class="input-box" style="resize: vertical;" name="descriere" rows="4" cols="50"></textarea>
-                <label class="flower-label">Pret:</label>
-                <input class="input-box" type="number" name="pret">
-                <label class="flower-label">Tip:</label>
-                <input class="input-box" type="text" name="tip">
-                <label class="flower-label">Anotimp:</label>
-                <select class="input-box" name="tip">
-                    <option>Primăvară</option>
-                    <option>Vară</option>
-                    <option>Toamnă</option>
-                    <option>Iarnă</option>
-                </select>
-                <label class="flower-label">Imagine:</label>
-                <input class="input-box" type="file" name="filename">
-            </div>
-            <button>Submit</button>
+            <form>
+                <div class="details-container">
+                    <label class="flower-label">Nume:</label>
+                    <input class="input-box" type="text" name="name">
+                    <label class="flower-label">Descriere:</label>
+                    <textarea class="input-box" style="resize: vertical;" name="user_description" rows="4" cols="50"></textarea>
+                    <label class="flower-label">Pret ($):</label>
+                    <input class="input-box" type="number" name="price" min="0" value="0">
+                    <label class="flower-label">Categorie:</label>
+                    <input class="input-box" type="text" name="category_name">
+                    <label class="flower-label">Anotimp:</label>
+                    <select class="input-box" name="season">
+                        <option>Primăvară</option>
+                        <option>Vară</option>
+                        <option>Toamnă</option>
+                        <option>Iarnă</option>
+                    </select>
+                    <label class="flower-label">Imagine:</label>
+                    <input class="input-box" type="text" name="image_url">
+                    
+                    <label for="quantity">Cantitate:</label>
+                    <input class="input-box" type="number" name="quantity" min="1" value="1" step="1">
+                    
+                    <h4>Parametri optimi</h4>
+                    <p></p>
+    
+                    <label for="soil">Tip sol</label>
+                    <input class="input-box" type="text" name="soil">
+                    
+                    <label for="humidity">Umiditate (%)</label>
+                    <input class="input-box" type="number" name="humidity" min="0" max="100" value="0">
+    
+                    <label for="temperature">Temperatura (°C)</label>
+                    <input class="input-box" type="number" name="temperature" min="-40" max="40" value="0">
+    
+                    <label for="water">Apa (l/m²)</label>
+                    <input class="input-box" type="number" name="water" min="0" max="100" value="0">
+                </div>
+                <button type="submit">Submit</button>
+            </form>
         </div>
     </div>
 </body>
