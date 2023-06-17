@@ -60,6 +60,9 @@
             <li>
                 2.6 <a href="#assumptions-and-dependencies">Assumptions and dependencies</a>
             </li>
+            <li>
+                2.7 <a href="#arhitecture">Arhitecture</a>
+            </li>
         </ul>
 
         <p>3. <a href="#external-interface-requirements">External interface requirements</a></p>
@@ -102,6 +105,8 @@
             <li>W3Schools HTML Element Reference: <a href="https://www.w3schools.com/tags/default.asp">www.w3schools.com/tags/default.asp</a></li>
             <li>W3Schools CSS Reference: <a href="https://www.w3schools.com/cssref/index.php">www.w3schools.com/cssref/index.php</a></li>
             <li>Web Technologies Course: <a href="https://profs.info.uaic.ro/~busaco/teach/courses/web/web-biblio.html">https://profs.info.uaic.ro/~busaco/teach/courses/web/web-biblio.html</a></li>
+            <li>Mongo DB: <a href="https://www.mongodb.com/">https://www.mongodb.com/</a></li>
+            <li>Docker: <a href="https://www.docker.com/">https://www.docker.com/</a></li>
         </ul>
     </section>
     <section id="overall-description" role="doc-overall-description">
@@ -126,13 +131,18 @@
         <p>This is a web application that can be interacted with through any of the widely and freely available browsers that exist (Chrome, Firefox, Opera, Safari, etc.). As a result, the product runs independent of the operating system, and so it can be accessed by Windows, Linux, MacOS and even TempleOS users. There are no known conflicts with any other application on a user's computer.</p>
         
         <h3 id="design-and-implementation-constraints">2.4 Design and implementation constraints</h3>
-        <p>This application has been written entirely in HTML, CSS and Javascript. On the server side, it uses Node.JS for handling client requests and MySQL for managing the database. It does not utilise any frameworks or any other tools that would've made working on it much easier.</p>
+        <p>This application has been written entirely in HTML, CSS and Javascript. On the server side, it uses Node.JS for handling client requests and Mongo DB for managing the database. It does not utilise any frameworks or any other tools that would've made working on it much easier.</p>
         
         <h3 id="user-documentation">2.5 User documentation</h3>
         <p>The current document is considered user documentation and it is readily available on the website, on the main page and on the landing page, by clicking the 'Help' button at the bottom. </p>
         
         <h3 id="assumptions-and-dependencies">2.6 Assumptions and dependencies</h3>
-        <p>This application is dependent on the current Web Technologies standards. It also depends on the Node.JS and MySQL technologies. Any failure on the part of these technologies will ultimately lead to the downfall of the web application, rendering it useless. The developers of this web app do not take responsibility for the maintenance of third-party technologies, nor do they offer warranty towards the suitability of this application for any purpose, not even on as-is basis.</p>
+        <p>This application is dependent on the current Web Technologies standards. It also depends on the Node.JS and Mongo DB technologies. Any failure on the part of these technologies will ultimately lead to the downfall of the web application, rendering it useless. The developers of this web app do not take responsibility for the maintenance of third-party technologies, nor do they offer warranty towards the suitability of this application for any purpose, not even on as-is basis.</p>
+        <h3 id="arhitecture">2.7 Arhitecture</h3>
+        <div class="diagram">
+            <img src="../../../C4 Diagram.png" alt="">
+            <img src="../../../C4 APi Diagram.png" alt="">
+        </div>
     </section>
     <section id="external-interface-requirements" role="doc-external-interface-requirements">
         <h2>3. External interface requirements</h2>
@@ -141,7 +151,7 @@
             Index page
         </h4>
         <div class="interface-item">
-            <img src="images/sample/index.png" alt="">
+            <img src="../images/sample/index.png" alt="">
             <p>This is the first page a non-logged user will see when accessing the website. From here, the user can either login, signup, go to 'about' or access this documentation through 'help'.</p>
         </div>
 
@@ -235,13 +245,18 @@
             Server
         </h4>
         <div class="interface-item">
-            <p>We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a Mongo DB database through it's variety of drivers, capable of handling a large number of requests.</p>
+            <p>We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a Mongo DB database through it's variety of drivers, capable of handling a large number of requests. It also has a variety of open source libraries that help with standard functionalities, such as Nodemailer when it comes to sending emails of any kind.</p>
         </div>
 
         <h3 id="communication-interfaces">3.3 Communication interfaces</h3>
         <h4>
-            To be added later on.
+            Account interface
         </h4>
+        <p>The endpoints used for this interface are <a href="/register">register</a>, <a href="/login">login</a>, <a href="/logout">logout</a>, <a href="/reset-password">reset-password</a> and <a href="/verify-email">verify-email</a> and they are responsible for managing the users' accounts securely as well as providing assistance in the case of users mishandling their account credentials. </p>
+        <h4>
+            Product interface
+        </h4>
+        <p>The endpoints used for this interface are <a href="/plantedFlowers">plantedFlowers</a>, <a href="/readyFlowers">readyFlowers</a>, <a href="/notifs">notifs</a>, <a href="/watchlist">watchlist</a> and <a href="/add-to-watchlist">add-to-watchlist</a> and they are responsible for providing the basic functionality of the online store aspect of the app, meaning selling, buying and keeping track of plants.</p>
     </section>
     <section id="system-features" role="doc-external-system-features">
         <h2>4. System features</h2>
@@ -263,7 +278,7 @@
         <p>In order to buy a flower, the logged in user must first select the flower that they wish to buy, then click the 'Add to cart ' button on the product page, or the shopping cart item next to the flower. They will then be redirected to their shopping, where they will be able to see all the products they have added to their basket. There, they will be able to complete their order and will be redirected to the payment page.</p>
 
         <h3>4.6 Sell flowers</h3>
-        <p>TBD</p>
+        <p>In order to sell a flower, the logged in user must go to the specific form page and input the required information about the product he's about to auction. These range from basic properties like name, price and description to more specific information, such as optimal conditions for growing or indexing data, such as season and category of plants. Upon clicling submit, the user will be redirected to the product page of the plant, displayed for sale. </p>
 
         <h3>4.7 Receive notifications about your flowers</h3>
         <p>When the environment conditions become unsuitable for your flowers, you will receive an email and browser notification about this. This decision is made by comparing the optimal conditions for the flowers with the data provided to the application by a third-party weather software. If it is determined that they fall out of a specific sensibility range,you will be notified about it so that you can take the proper measures and shield your flowers from hazard.</p>
@@ -289,10 +304,13 @@
                 <p>Every information entered by the user shall follow GDPR regulations.</p>
             </li>
             <li>
-                <p>Every user input should, preferably, be properly sanitized in order to avoid SQL Injections.</p>
+                <p>Every user input should, preferably, be properly sanitized in order to avoid Database Injections.</p>
             </li>
             <li>
                 <p>Every html file should, preferably, be properly sanitized in order to avoid Cross Site Scripting</p> 
+            </li>
+            <li>
+                <p>User cookies should, preferably, be encrypted as to keep private information such as emails hidden from inspect tools of a browser.</p>
             </li>
         </ul>
     </section>
