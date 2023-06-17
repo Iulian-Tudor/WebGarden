@@ -26,6 +26,7 @@ Table of contents
 *   2.4 [Design and implementation constraints](#design-and-implementation-constraints)
 *   2.5 [User documentation](#user-documentation)
 *   2.6 [Assumptions and dependencies](#assumptions-and-dependencies)
+*   2.7 [Arhitecture](#arhitecture)
 
 3\. [External interface requirements](#external-interface-requirements)
 
@@ -59,6 +60,8 @@ This product is intended for people that are passionate with the subject of hort
 *   W3Schools HTML Element Reference: [www.w3schools.com/tags/default.asp](https://www.w3schools.com/tags/default.asp)
 *   W3Schools CSS Reference: [www.w3schools.com/cssref/index.php](https://www.w3schools.com/cssref/index.php)
 *   Web Technologies Course: [https://profs.info.uaic.ro/~busaco/teach/courses/web/web-biblio.html](https://profs.info.uaic.ro/~busaco/teach/courses/web/web-biblio.html)
+*   Mongo DB: [https://www.mongodb.com/](https://www.mongodb.com/)
+*   Docker: [https://www.docker.com/](https://www.docker.com/)
 
 2\. Overall description
 -----------------------
@@ -86,7 +89,7 @@ This is a web application that can be interacted with through any of the widely 
 
 ### 2.4 Design and implementation constraints
 
-This application has been written entirely in HTML, CSS and Javascript. On the server side, it uses Node.JS for handling client requests and MySQL for managing the database. It does not utilise any frameworks or any other tools that would've made working on it much easier.
+This application has been written entirely in HTML, CSS and Javascript. On the server side, it uses Node.JS for handling client requests and Mongo DB for managing the database. It does not utilise any frameworks or any other tools that would've made working on it much easier.
 
 ### 2.5 User documentation
 
@@ -94,52 +97,76 @@ The current document is considered user documentation and it is readily availabl
 
 ### 2.6 Assumptions and dependencies
 
-This application is dependent on the current Web Technologies standards. It also depends on the Node.JS and MySQL technologies. Any failure on the part of these technologies will ultimately lead to the downfall of the web application, rendering it useless. The developers of this web app do not take responsibility for the maintenance of third-party technologies, nor do they offer warranty towards the suitability of this application for any purpose, not even on as-is basis.
+This application is dependent on the current Web Technologies standards. It also depends on the Node.JS and Mongo DB technologies. Any failure on the part of these technologies will ultimately lead to the downfall of the web application, rendering it useless. The developers of this web app do not take responsibility for the maintenance of third-party technologies, nor do they offer warranty towards the suitability of this application for any purpose, not even on as-is basis.
+
+### 2.7 Arhitecture
+
+The images are available on the main branch of the repository.
 
 3\. External interface requirements
 -----------------------------------
 
 ### 3.1 User interfaces
 
-#### [Index page]
+#### Index page
+
+![](../images/sample/index.png)
 
 This is the first page a non-logged user will see when accessing the website. From here, the user can either login, signup, go to 'about' or access this documentation through 'help'.
 
-#### [Login page]
+#### Login page
+
+![](../images/sample/login.png)
 
 This is the page used to log into an user's account. The required fields for logging in are the email/username and the password. There is also a checkbox for the user to specify that their credentials should be stored locally.
 
 In case the user forgot their password, they can click on the "I forgot my password" link, from where they can reset the forgotten password.
 
-#### [Signup page]
+#### Signup page
+
+![](../images/sample/signup.png)
 
 This is the page used to create an user account. The required fields are the email, the password and the username. The email and the username shall uniquely identify an user, so you cannot create multiple accounts with the same email address or the same username.
 
-#### [Password reset page]
+#### Password reset page
+
+![](../images/sample/reset.png)
 
 This page can be used in order to reset your password, in case you forgot it. The required fields are the email address associated with your account. After that, you will receive an email from where you can input your new password that you will use for logging in.
 
-#### [About page]
+#### About page
+
+![](../images/sample/about.png)
 
 This page shows information about the product and their developers. It is also used by us as a space for announcing changes to the webpage architecture and design.
 
-#### [Main page]
+#### Main page
+
+![](../images/sample/main_page.png)
 
 This is the main page of the website and it provides the functionality for filtering flowers, subscribing to the watchlist of a specific flower and adding the desired flowers to your shopping cart.
 
-#### [My account]
+#### My account
+
+![](../images/sample/myaccount.png)
 
 This page can be used to check for notifications, view your watchlist or edit your account information and settings.
 
-#### [My garden]
+#### My garden
+
+![](../images/sample/mygarden.png)
 
 This page can be used to check the current status of your planted flowers. You can check each item's preferred environment and the current environment by clicking on their attached button.
 
-#### [Shopping cart]
+#### Shopping cart
+
+![](../images/sample/shopping_cart.png)
 
 You can use this page in order to finish your purchase. There, you can review the subtotal of your cart, the tax and the total payment for buying the added flowers.
 
-#### [Product page]
+#### Product page
+
+![](../images/sample/product_page.png)
 
 This page describes the flower and its preferred conditions in more detail. From here, you can also see more products from the same seller, in case you have bought from them in the past and enjoyed their products.
 
@@ -147,18 +174,23 @@ You can add an item to your cart from this page as well.
 
 ### 3.2 Software interfaces
 
-#### [Database]
+#### Database
 
-The app makes use of MySQL Relational Database to keep track of its data, including transactions, sales offers posted by users, the details of each product put up for sale and the general details surounding the species of flowers. It also contains a table 'category' for a better optimisation and classification of the products on display. We have chosen MySQL for an easier integration on the backend part, due its ease of use and reliability.
+The app makes use of a noSQL database, Mongo DB, to keep track of its data, including transactions, sales offers posted by users, the details of each product put up for sale and the general details surounding the species of flowers. It also contains a collection 'category' for a better optimisation and classification of the products on display. We have chosen Mongo DB for an easier integration on the backend part, due its ease of use and reliability. We are running the database in a Docker container.
 
+#### Server
 
-#### [Server]
-
-We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a MySQL database through it's variety of drivers, capable of handling a large number of requests.
+We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a Mongo DB database through it's variety of drivers, capable of handling a large number of requests. It also has a variety of open source libraries that help with standard functionalities, such as Nodemailer when it comes to sending emails of any kind.
 
 ### 3.3 Communication interfaces
 
-#### To be added later on.
+#### Account interface
+
+The endpoints used for this interface are [register](/register), [login](/login), [logout](/logout), [reset-password](/reset-password) and [verify-email](/verify-email) and they are responsible for managing the users' accounts securely as well as providing assistance in the case of users mishandling their account credentials.
+
+#### Product interface
+
+The endpoints used for this interface are [plantedFlowers](/plantedFlowers), [readyFlowers](/readyFlowers), [notifs](/notifs), [watchlist](/watchlist) and [add-to-watchlist](/add-to-watchlist) and they are responsible for providing the basic functionality of the online store aspect of the app, meaning selling, buying and keeping track of plants.
 
 4\. System features
 -------------------
@@ -187,7 +219,7 @@ In order to buy a flower, the logged in user must first select the flower that t
 
 ### 4.6 Sell flowers
 
-TBD
+In order to sell a flower, the logged in user must go to the specific form page and input the required information about the product he's about to auction. These range from basic properties like name, price and description to more specific information, such as optimal conditions for growing or indexing data, such as season and category of plants. Upon clicling submit, the user will be redirected to the product page of the plant, displayed for sale.
 
 ### 4.7 Receive notifications about your flowers
 
@@ -209,6 +241,8 @@ When the environment conditions become unsuitable for your flowers, you will rec
     
 *   Every information entered by the user shall follow GDPR regulations.
     
-*   Every user input should, preferably, be properly sanitized in order to avoid SQL Injections.
+*   Every user input should, preferably, be properly sanitized in order to avoid Database Injections.
     
 *   Every html file should, preferably, be properly sanitized in order to avoid Cross Site Scripting
+    
+*   User cookies should, preferably, be encrypted as to keep private information such as emails hidden from inspect tools of a browser.
