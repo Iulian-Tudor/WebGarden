@@ -54,7 +54,7 @@ export default class Sensor{
                     await db.collection('last_params').insertOne({...this.getSensorData(), flower_id: product['_id']});
                 }
                 else{
-                    await db.collection('last_params').updateOne({_id: last_flower_params['id']}, {$set: this.getSensorDelta(last_flower_params)});
+                    await db.collection('last_params').updateOne({_id: last_flower_params['_id']}, {$set: this.getSensorDelta(last_flower_params)});
                 }
             }
         }catch(error){
