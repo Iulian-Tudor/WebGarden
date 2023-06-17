@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import sanitize from 'mongo-sanitize';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import { parse } from 'querystring';
 
 function generateUniqueToken() {
   return crypto.randomBytes(32).toString('hex');
@@ -46,8 +45,9 @@ export async function requestPasswordReset(req, res) {
     
 
     await transporter.sendMail(content);
-    res.statusCode = 200;
-    res.end('Password reset email sent');
+    res.setHeader('Location', '/html/passwordEmail.html'); // Set the Location header to the desired redirect path
+    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.end();
   } catch (error) {
     console.error(error);
     res.statusCode = 500;
@@ -79,8 +79,9 @@ export async function resetPassword(req, res) {
 
       await db.collection('password_reset').deleteOne({ token });
 
-      res.statusCode = 200;
-      res.end('Password reset successfully');
+      res.setHeader('Location', '/html/passwordChanged.html'); // Set the Location header to the desired redirect path
+      res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+      res.end();
     } catch (error) {
       console.error(error);
       res.statusCode = 500;

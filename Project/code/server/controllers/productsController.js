@@ -42,19 +42,21 @@ export default class ProductsController {
 
             productHandle['quantity'] = productHandle['quantity'] ?? 1;
 
-            const categories = db.collection('categories');
+            // const categories = db.collection('categories');
 
-            const category = await categories.findOne({name: productHandle.category_name});
-            if(category === null) {
-                res.statusCode = 400;
-                return res.end('Category is not available');
-            }
+            // const category = await categories.findOne({name: productHandle.category_name});
+            // if(category === null) {
+            //     res.statusCode = 400;
+            //     return res.end('Category is not available');
+            // }
 
-            const product = category.products.find(product => {
-                return product.name === productHandle['name']
-                    && product.seller_id.equals(productHandle['seller_id'])
-                    && product.price === productHandle['price'];
+            const product = await db.collection('products').findOne({
+                category_name: productHandle['category_name'],
+                name: productHandle['name'],
+                seller_id: new ObjectId(productHandle['seller_id']),
+                price: productHandle['price']
             });
+            
             if(!product || !product.quantity) {
                 res.statusCode = 400;
                 return res.end('Product is not available');
@@ -74,7 +76,7 @@ export default class ProductsController {
                     && product.category_name === product['category_name'];
             });
 
-            // decrement the quality
+            // decrement the quantity
             // await categories.updateOne(
             //     { name: product['category_name'] },
             //     { $set: { "products.$[element].quantity": product['quantity'] } },
@@ -191,32 +193,20 @@ export default class ProductsController {
             product['seller_id'] = userSession.user_id;
             product['quantity'] = product['quantity'] ?? 1;
 
-            const categories = db.collection('categories');
+            const products = db.collection('products');
 
-            let category = await categories.findOne({name: product['category_name']});
-            if(category === null) {
-                await categories.insertOne({name: product['category_name'], products: []});
-                category = await categories.findOne({name: product['category_name']});
-            }
-
-            const storedProduct = category.products.find(p => {
-                return p.name === product['name']
-                    && p.seller_id.equals(product['seller_id'])
-                    && p.price === product['price'];
+            const storedProduct = await products.findOne({
+                category_name: product['category_name'],
+                name: product['name'],
+                seller_id: new ObjectId(product['seller_id']),
+                price: product['price']
             });
 
             if(!storedProduct) {
-                await categories.updateOne(
-                    { name: product['category_name'] },
-                    { $push: { products: product } }
-                );
+                await products.insertOne(product);
             } else {
                 product['quantity'] += storedProduct['quantity'];
-                await categories.updateOne(
-                    { name: product['category_name'] },
-                    { $set: { "products.$[element].quantity": product['quantity'] } },
-                    { arrayFilters: [{ "element._id": storedProduct._id }] }
-                );
+                await products.updateOne(storedProduct, {$set: {quantity: product['quantity']}});
             }
 
             res.end();
@@ -233,18 +223,11 @@ export default class ProductsController {
         const { db, client } = await connectToDb();
         
         try {
-            const categoriesCollection = db.collection('categories');
+            const products = await db.collection('products').find({}).toArray();
 
-            const categories = [];
-
-            const cursor = categoriesCollection.find({});
-            while(await cursor.hasNext()) {
-                categories.push(await cursor.next());
-            }
-
-            const categoryOptions = categories.map(category => category.name);
-            const optimalSoilOptions = categories.flatMap(category => category.products.map(product => product.flower_data.optimal_soil));
-            const seasonOptions = categories.flatMap(category => category.products.map(product => product.flower_data.season));
+            const categoryOptions = products.map(product => product.category_name);
+            const optimalSoilOptions = products.map(product => product.flower_data.optimal_parameters.soil);
+            const seasonOptions = products.map(product => product.flower_data.season);
 
             const filters = [
                 {
@@ -296,9 +279,7 @@ export default class ProductsController {
         }
 
         try {
-            const categories = db.collection('categories');
-
-            const allProducts = (await categories.find({}).toArray()).flatMap(category => category.products);
+            const allProducts = await db.collection('products').find({}).toArray();
 
             let products = allProducts.filter(p => {
                 return (!filters['category'] || filters['category'] === p.category_name)
@@ -346,19 +327,13 @@ export default class ProductsController {
                 return res.end(validInfo.serialize());
             }
 
-            const categories = db.collection('categories');
+            const product = await db.collection('products').findOne({
+                category_name: productHandle['category_name'],
+                name: productHandle['name'],
+                seller_id: new ObjectId(productHandle['seller_id']),
+                price: productHandle['price']
+            })
 
-            const category = await categories.findOne({name: productHandle.category_name});
-            if(category === null) {
-                res.statusCode = 400;
-                return res.end('Category is not available');
-            }
-
-            const product = category.products.find(product => {
-                return product.name === productHandle['name']
-                    && product.seller_id.equals(productHandle['seller_id'])
-                    && product.price === productHandle['price'];
-            });
             if(!product) {
                 res.statusCode = 400;
                 return res.end('Product is not available');
