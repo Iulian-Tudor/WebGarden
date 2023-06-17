@@ -87,6 +87,12 @@ body {
     align-items: center;
   }
 
+  .diagram {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
   #table-of-contents > ul {
     list-style-type: none;
   }
@@ -111,6 +117,10 @@ body {
   }
   @media screen and (max-width: 800px) {
     .interface-item {
+      flex-direction: column;
+    }
+
+    .diagram{
       flex-direction: column;
     }
 
