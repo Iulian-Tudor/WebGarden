@@ -10,6 +10,7 @@ import { registerRoutes } from './routes.js';
 import { connectToDb } from './db/db.js';
 import parseBody from './parsers/BodyParser.js';
 import parseURL from './parsers/URLParser.js';
+import Sensor from './services/sensor.js';
 
 const router = new Router();
 
@@ -24,6 +25,10 @@ registerRoutes(router);
 
     await db.collection('user_sessions').createIndex({createdAt: 1}, { expireAfterSeconds: SESSION_TTL });
     client.close();
+
+    //Start sensor service
+    const sensor_service = new Sensor();
+    sensor_service.start();
 })();
 
 
