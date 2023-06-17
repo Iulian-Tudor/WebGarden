@@ -36,6 +36,9 @@ body {
 .content-area-container {
     background-color: #00BF63;
     width: 90%;
+    padding: 10px;
+    margin: 20px auto;
+    border-radius: 20px;
 }
 
 .notif-paragraph {
@@ -50,6 +53,15 @@ body {
     margin:10px;
     overflow-x: scroll;
     width:95%;
+
+    /* hide scrollbar for other browsers */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.notifications-container::-webkit-scrollbar {
+    /* hide scrollbar for chrome */
+    display: none;
 }
 
 @media screen and (max-width: 500px){
