@@ -15,7 +15,8 @@ const productValidator = new Validator()
         .addRule('optimal_parameters', 'object', new Validator()
             .addRule('soil', 'string', null)
             .addRule('humidity', 'number', null)
-            .addRule('temperature', 'number', null)));
+            .addRule('temperature', 'number', null)
+            .addRule('water', 'number', null)));
 
 
 const productHandleValidator = new Validator()
