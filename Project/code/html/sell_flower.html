@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Put up a new flower for sale</title>
+    <link rel="stylesheet" href="../styles/topbar.css">
+    <link rel="stylesheet" href="../styles/sell-flower.css">
+</head>
+
+<body>
+    <div class="bg">
+        <div class="topbar">
+            <div class="wrapper">
+                <div class="topbar-item logo">
+                    <div class="img-wrapper">
+                        <img src="../icons/logo.webp" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="../icons/garden.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Garden
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="../icons/shopping.png" alt="">
+                </div>
+                <div class="item-title">
+                    Shopping Cart
+                </div>
+            </div>
+            <div class="topbar-item">
+                <div class="img-wrapper">
+                    <img src="../icons/account.png" alt="">
+                </div>
+                <div class="item-title">
+                    My Account
+                </div>
+            </div>
+        </div>
+        <div class="main-container">
+            <p class="title">Ce floare vrei să vinzi?</p>
+            <div class="details-container">
+                <label class="flower-label">Nume:</label>
+                <input class="input-box" type="text" name="nume">
+                <label class="flower-label">Descriere:</label>
+                <textarea class="input-box" style="resize: vertical;" name="descriere" rows="4" cols="50"></textarea>
+                <label class="flower-label">Pret:</label>
+                <input class="input-box" type="number" name="pret">
+                <label class="flower-label">Tip:</label>
+                <input class="input-box" type="text" name="tip">
+                <label class="flower-label">Anotimp:</label>
+                <select class="input-box" name="tip">
+                    <option>Primăvară</option>
+                    <option>Vară</option>
+                    <option>Toamnă</option>
+                    <option>Iarnă</option>
+                </select>
+                <label class="flower-label">Imagine:</label>
+                <input class="input-box" type="file" name="filename">
+            </div>
+            <button>Submit</button>
+        </div>
+    </div>
+</body>
+
+</html>
