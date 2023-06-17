@@ -228,15 +228,14 @@
             Database
         </h4>
         <div class="interface-item db-item">
-            <p>The app makes use of MySQL Relational Database to keep track of its data, including transactions, sales offers posted by users, the details of each product put up for sale and the general details surounding the species of flowers. It also contains a table 'category' for a better optimisation and classification of the products on display. We have chosen MySQL for an easier integration on the backend part, due its ease of use and reliability.</p>
-            <img id="db-img" src="../images/sample/Web database.jpg" alt="">
+            <p>The app makes use of a noSQL database, Mongo DB, to keep track of its data, including transactions, sales offers posted by users, the details of each product put up for sale and the general details surounding the species of flowers. It also contains a collection 'category' for a better optimisation and classification of the products on display. We have chosen Mongo DB for an easier integration on the backend part, due its ease of use and reliability. We are running the database in a Docker container.</p>
         </div>
 
         <h4>
             Server
         </h4>
         <div class="interface-item">
-            <p>We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a MySQL database through it's variety of drivers, capable of handling a large number of requests.</p>
+            <p>We decided to go with Node.js due to its ability to make use of JavaScript on the backend side as well, therefore cutting down on development time, by using the same conventions. It also makes the code easier to maintain. On top of that, Node.js makes it very easy to connect a server to a Mongo DB database through it's variety of drivers, capable of handling a large number of requests.</p>
         </div>
 
         <h3 id="communication-interfaces">3.3 Communication interfaces</h3>
