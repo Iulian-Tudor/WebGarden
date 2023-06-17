@@ -8,6 +8,12 @@ window.onload = async () => {
     document.querySelector('.price').textContent = product.price + '$';
     document.querySelector('.description').textContent = product.user_description;
     document.querySelector('.flower-img').src = product.image_url;
+    document.querySelector('.category').textContent = product.category_name ?? '-';
+    document.querySelector('.season').textContent = product.flower_data.season ?? '-';
+    document.querySelector('.humidity').textContent = product.flower_data.optimal_parameters.humidity ?? '-';
+    document.querySelector('.soil').textContent = product.flower_data.optimal_parameters.soil ?? '-';
+    document.querySelector('.water').textContent = product.flower_data.optimal_parameters.water ?? '-';
+    document.querySelector('.temperature').textContent = product.flower_data.optimal_parameters.temperature ?? '-';
 
     const productHandle = getHandle(product);
 

@@ -36,6 +36,12 @@ html, body {
 
 }
 
+.product-configuration > div {
+  display: flex;
+  padding-right: 100px;
+  justify-content: space-between;
+}
+
 .product-description {
   border-bottom: 1px solid yellow;
   margin-bottom: 20px;
