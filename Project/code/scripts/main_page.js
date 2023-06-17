@@ -1,5 +1,7 @@
 window.onload = main;
 
+let products = [];
+
 async function main() {
     await updateProducts();
 
@@ -20,6 +22,41 @@ async function main() {
         await updateProducts();
         toggleSidebar();
     });
+
+    const exportBtn = document.querySelector('.csv-export');
+    exportBtn.addEventListener('click', () => generateCSV());
+}
+
+function generateCSV() {
+    const header = ['name', 'price', 'seller_id', 'category_name', 'user_description', 'image_url', 'soil', 'temperature', 'humidity', 'water', 'season', 'quantity'];
+
+    let content = '';
+
+    const appendRow = row => {
+        content += row.map(item => item ? item.toString() : '').join(',') + '\n';
+    };
+
+    appendRow(header);
+
+    for(const product of products) {
+        const optimal_parameters = product.flower_data.optimal_parameters;
+        const row = [product.name, product.price, product.seller_id, product.category_name, product.user_description, product.image_url, 
+            optimal_parameters.soil, optimal_parameters.temperature, optimal_parameters.humidity, optimal_parameters.water, product.flower_data.season, product.quantity];
+
+        appendRow(row);
+    }
+
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const downloadLink = document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+
+    downloadLink.href = url;
+    downloadLink.download = 'products.csv';
+    downloadLink.click();
+
+    window.URL.revokeObjectURL(url);
 }
 
 function toggleSidebar() {
@@ -37,7 +74,7 @@ async function updateProducts() {
     const queryData = getQueryData();
     const query = urlEncode(queryData);
 
-    const products = await retrieveProducts(query);
+    products = await retrieveProducts(query);
     const itemsElement = document.querySelector(".items");
     itemsElement.innerHTML = '';
     for(const product of products) {

@@ -34,9 +34,11 @@ function constructCartProductElement(product) {
 
             <div class="item-info">
                 <div class="item-content">
-                    <h3 class="title">
-                        Flower title
-                    </h3>
+                    <a class="product-link">
+                        <h3 class="title">
+                            Flower title
+                        </h3>
+                    </a>
                     <p class="description">
                         Lorem ipsum dolor sit amet nesciunt illum magni nisi consectetur eveniet! Error, provident doloremque quos, deleniti corrupti explicabo officia, culpa hic sit totam debitis. Amet.
                     </p>
@@ -68,6 +70,7 @@ function constructCartProductElement(product) {
     element.querySelector('.title').textContent = product.name;
     element.querySelector('.description').textContent = product.user_description;
     element.querySelector('.item-price').textContent = product.price + '$';
+    element.querySelector('.product-link').href = '/html/product.html?flower_id=' + product._id;
 
     const quantityInput = element.querySelector('.quantity');
     quantityInput.value = product.quantity;

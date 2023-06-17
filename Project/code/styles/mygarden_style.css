@@ -4,7 +4,6 @@
 }
 
 body, html {
-
     margin: 0;
 }
 
@@ -163,6 +162,22 @@ body {
 
 .popup-closed{
     display: none;
+}
+
+.main-content > a {
+    margin: 0 auto;
+}
+
+.sell-button {
+    padding: 10px 20px;
+    border-radius: 10px;
+    background-color: #ccde0d;
+    font-weight: bold;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
 }
 
 @media screen and (max-width: 800px) {
