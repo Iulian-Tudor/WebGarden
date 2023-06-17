@@ -6,7 +6,7 @@ import { connectToDb } from '../db/db.js';
 export async function sendVerificationEmail(sanitizedEmail, userId) {
 
     const token = jwt.sign(
-        { userId },
+        { userId: userId },
         process.env.JWT_SECRET,
         { expiresIn: "24h" }
     );
@@ -64,6 +64,7 @@ export async function verifyEmail(req, res) {
       }
   
       await db.collection("users").updateOne(
+        { _id: new ObjectId(userId) },
         { _id: new ObjectId(userId) },
         { $set: { verified: true } }
       );

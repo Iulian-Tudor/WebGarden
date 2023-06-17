@@ -31,12 +31,23 @@ var notifList = [
     }
 ];
 
+async function receiveNotifications()
+{
+    const response = await fetch("/notifs");
+    const data = await response.json();
+    return data;
+}
+ 
 const my_flowers_div = document.getElementById('my-flowers');
 
 for (var i = 0; i < notifList.length; i++) {
     const notif = createNotification(notifList[i]['img'], notifList[i]['desc'], String.fromCodePoint(0x2757));
     my_flowers_div.append(notif);
 }
+
+receiveNotifications().then( notifications => {
+    console.log(notifications);
+})
 
 
 var watchList = [

@@ -42,14 +42,6 @@ export default class ProductsController {
 
             productHandle['quantity'] = productHandle['quantity'] ?? 1;
 
-            // const categories = db.collection('categories');
-
-            // const category = await categories.findOne({name: productHandle.category_name});
-            // if(category === null) {
-            //     res.statusCode = 400;
-            //     return res.end('Category is not available');
-            // }
-
             const product = await db.collection('products').findOne({
                 category_name: productHandle['category_name'],
                 name: productHandle['name'],
@@ -195,7 +187,7 @@ export default class ProductsController {
 
             const products = db.collection('products');
 
-            const storedProduct = await products.findOne({
+            let storedProduct = await products.findOne({
                 category_name: product['category_name'],
                 name: product['name'],
                 seller_id: new ObjectId(product['seller_id']),
@@ -209,7 +201,14 @@ export default class ProductsController {
                 await products.updateOne(storedProduct, {$set: {quantity: product['quantity']}});
             }
 
-            res.end();
+            storedProduct = await products.findOne({
+                category_name: product['category_name'],
+                name: product['name'],
+                seller_id: new ObjectId(product['seller_id']),
+                price: product['price']
+            });
+
+            res.end(JSON.stringify({ flower_id: storedProduct._id }));
         } catch(e) {
             console.log(e);
             res.statusCode = 500;
@@ -283,7 +282,7 @@ export default class ProductsController {
 
             let products = allProducts.filter(p => {
                 return (!filters['category'] || filters['category'] === p.category_name)
-                    && (!filters['optimal_soil'] || filters['optimal_soil'] === p.flower_data.optimal_soil)
+                    && (!filters['optimal_soil'] || filters['optimal_soil'] === p.flower_data.optimal_parameters.soil)
                     && (!filters['season'] || filters['season'] === p.flower_data.season);
             });
 
@@ -319,20 +318,9 @@ export default class ProductsController {
         const { db, client } = await connectToDb();
 
         try {
-            const productHandle = {...req.params};
-            productHandle['price'] = parseInt(productHandle['price']);
-            const validInfo = productHandleValidator.validate(productHandle);
-            if(!validInfo.valid) {
-                res.statusCode = 400;
-                return res.end(validInfo.serialize());
-            }
+            const { flower_id } = req.params;
 
-            const product = await db.collection('products').findOne({
-                category_name: productHandle['category_name'],
-                name: productHandle['name'],
-                seller_id: new ObjectId(productHandle['seller_id']),
-                price: productHandle['price']
-            })
+            const product = await db.collection('products').findOne({_id: new ObjectId(flower_id)});
 
             if(!product) {
                 res.statusCode = 400;
