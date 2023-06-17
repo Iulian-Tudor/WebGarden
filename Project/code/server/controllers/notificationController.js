@@ -15,13 +15,7 @@ export async function getNotification(req, res, userSession){
 
     try{
         const ownerId = userSession.user_id;
-
-        console.log(ownerId);
-
         const products = await db.collection("products").find({seller_id : new ObjectId(ownerId)}).toArray();
-
-        
-
         var notificationList = [];
 
         for(const product of products)
