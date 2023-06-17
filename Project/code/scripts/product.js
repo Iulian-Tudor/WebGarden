@@ -1,5 +1,7 @@
 window.onload = async () => {
-    const res = await fetch('/product' + window.location.search);
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const res = await fetch('/product?flower_id=' + searchParams.get('flower_id'));
     const product = await res.json();
 
     document.querySelector('.title').textContent = product.name;
@@ -7,7 +9,7 @@ window.onload = async () => {
     document.querySelector('.description').textContent = product.user_description;
     document.querySelector('.flower-img').src = product.image_url;
 
-    const productHandle = getHandle();
+    const productHandle = getHandle(product);
 
     document.querySelector('.cart-btn').onclick = async () => {
         await fetch('/cart_products', {
@@ -21,14 +23,11 @@ window.onload = async () => {
     }
 }
 
-function getHandle() {
-    const dataRaw = window.location.search.split('?')[1];
-
-    const data = {};
-    for(const pair of dataRaw.split('&')) {
-        const [key, value] = pair.split('=').map(decodeURIComponent);
-        data[key] = value;
-    }
-    data['price'] = parseInt(data['price']);
-    return data;
+function getHandle(product) {
+    return {
+        category_name: product['category_name'],
+        name: product['name'],
+        price: product['price'],
+        seller_id: product['seller_id']
+    };
 }
