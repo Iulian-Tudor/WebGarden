@@ -36,6 +36,13 @@ body, html {
     column-gap: 10px;   
 }
 
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 .flower-label{
     height: 10px;
     grid-column-start: 1;
