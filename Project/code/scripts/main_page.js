@@ -12,7 +12,7 @@ async function main() {
 
     const sidebarEl = document.querySelector('.sidebar');
 
-    for(const {name, options} of filters) {
+    for (const { name, options } of filters) {
         const filterItemEl = constructFilterItem(name, options);
         sidebarEl.appendChild(filterItemEl);
     }
@@ -38,15 +38,15 @@ function generateCSV() {
 
     appendRow(header);
 
-    for(const product of products) {
+    for (const product of products) {
         const optimal_parameters = product.flower_data.optimal_parameters;
-        const row = [product.name, product.price, product.seller_id, product.category_name, product.user_description, product.image_url, 
-            optimal_parameters.soil, optimal_parameters.temperature, optimal_parameters.humidity, optimal_parameters.water, product.flower_data.season, product.quantity];
+        const row = [product.name, product.price, product.seller_id, product.category_name, product.user_description, product.image_url,
+        optimal_parameters.soil, optimal_parameters.temperature, optimal_parameters.humidity, optimal_parameters.water, product.flower_data.season, product.quantity];
 
         appendRow(row);
     }
 
-    
+
     const blob = new Blob([content], { type: 'text/plain' });
 
     const downloadLink = document.createElement('a');
@@ -61,7 +61,7 @@ function generateCSV() {
 
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
-    if(sidebar.classList.contains('sidebar-closed')) {
+    if (sidebar.classList.contains('sidebar-closed')) {
         sidebar.classList.remove('sidebar-closed');
         sidebar.classList.add('sidebar-open');
     } else {
@@ -77,7 +77,7 @@ async function updateProducts() {
     products = await retrieveProducts(query);
     const itemsElement = document.querySelector(".items");
     itemsElement.innerHTML = '';
-    for(const product of products) {
+    for (const product of products) {
         const element = constructProductElement(product);
         itemsElement.append(element);
     }
@@ -88,10 +88,10 @@ function getQueryData() {
 
     const queryData = {};
 
-    for(const filterItem of filterItems) {
+    for (const filterItem of filterItems) {
         const selectEl = filterItem.querySelector('select');
         const selectedOption = selectEl.options[selectEl.selectedIndex];
-        if(selectedOption.value === 'default') {
+        if (selectedOption.value === 'default') {
             continue;
         }
 
@@ -160,7 +160,7 @@ function constructProductElement(product) {
     element.querySelector('.item-price').textContent = product.price + '$';
 
     const productHandle = getProductHandle(product);
-    
+
     element.querySelector('.title-link').href = '/html/product.html?flower_id=' + product._id;
 
     element.querySelector('.cart').onclick = async () => {
@@ -174,6 +174,8 @@ function constructProductElement(product) {
         window.location.href = '/html/shopping_cart.html';
     }
     
+    element.querySelector('.watch').addEventListener('click', function (){addProductToWatchlist(product);});
+
     return element;
 }
 
@@ -198,7 +200,7 @@ function constructFilterItem(name, options) {
     defaultOptionEl.text = 'Select ' + beautifyProperty(name);
     selectEl.appendChild(defaultOptionEl);
 
-    for(const option of options) {
+    for (const option of options) {
         const optionEl = document.createElement('option');
         optionEl.value = option;
         optionEl.text = beautifyProperty(option);
@@ -224,9 +226,29 @@ function getProductHandle(product) {
 
 function urlEncode(payload) {
     const components = [];
-    for(const key in payload) {
+    for (const key in payload) {
         const component = encodeURIComponent(key) + '=' + encodeURIComponent(payload[key]);
-        components.push(component); 
+        components.push(component);
     }
     return components.join('&');
+}
+
+async function addProductToWatchlist(product)
+{
+    console.log(product._id);
+    const watchBody = { 'flower_id': product._id };
+
+    try{
+        const response = await fetch('/add-to-watchlist', {
+            method: 'POST',
+            body: JSON.stringify(watchBody),
+            header: {
+                'content-type': 'application/json'
+            }
+        });
+
+        console.log(response);
+    } catch(error) {
+        console.log(error);
+    }
 }

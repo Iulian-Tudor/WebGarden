@@ -2,8 +2,9 @@ import { ObjectId } from "mongodb";
 import { connectToDb } from "../db/db.js";
 
 
-function createNotification(img_link, desc){
+function createNotification(flower_id, img_link, desc){
     var notif = {
+        "id": flower_id,
         "img" : img_link,
         "desc": desc
     }
@@ -20,13 +21,13 @@ export async function getWatchlist(req, res, userSession){
         const user_watchlist = await db.collection("watchlist").find({user_id: new ObjectId(userId)}).toArray();
         
 
-        var watchList = [];
+        const watchList = [];
 
         for(const element of user_watchlist)
         {
             const product = await db.collection('products').findOne({_id: element['flower_id']});
 
-            watchList.push(createNotification(product['image_url'], product['name']));
+            watchList.push(createNotification(product['_id'], product['image_url'], product['name']));
         }
         
         res.statusCode = 200;
