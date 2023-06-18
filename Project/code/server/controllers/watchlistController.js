@@ -26,6 +26,9 @@ export async function getWatchlist(req, res, userSession){
         for(const element of user_watchlist)
         {
             const product = await db.collection('products').findOne({_id: element['flower_id']});
+            if(!product) {
+                continue;
+            }
 
             watchList.push(createNotification(product['_id'], product['image_url'], product['name']));
         }
