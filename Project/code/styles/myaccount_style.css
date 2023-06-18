@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Playlist";
+    src: url("../fonts/Playlist-Script.otf");
+}
+
 body, html {
 
     margin: 0;
@@ -22,23 +27,18 @@ body {
     width: 100vw;
 }
 
-.user-details {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-
-#user-icon {
-    width:100px;
-    height:100px;
-}
-
 .user-description {
+    margin:10px;
+    padding: 10px;
+    border-radius: 5px;
     background-color: #7ED957;
 }
 
 #user-title {
     text-align: center;
+    font-family: 'Playlist', sans-serif;
+    font-size: 70px;
+    text-shadow: 1px 1px black;
 }
 
 #user-desc-text{

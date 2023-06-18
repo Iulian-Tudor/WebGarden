@@ -6,13 +6,18 @@ export async function addToWatchlist(req, res, userSession){
 
     try{
         const userId = userSession.user_id;
-        const {flower_id} = req.body;
+        const req_body = {...req.body};
 
-        await db.collection('watchlist').insertOne({user_id: new ObjectId(userId), flower_id: new ObjectId(flower_id)});
+        console.log(userId);
+        console.log(req_body.flower_id);
+
+        await db.collection('watchlist').insertOne({user_id: new ObjectId(userId), flower_id: new ObjectId(req_body['flower_id'])});
         
-        res.setHeader('Location', '/html/main_page.html'); // Set the Location header to the desired redirect path
-        res.statusCode = 302; // Set the status code to 302 for a temporary redirect
-        res.end();
+        //const insertedElem = await db.collection('watchlist').findOne({flower_id: req_body['flower_id']});
+        //console.log(insertedElem);
+
+        res.statusCode = 200;
+        res.end('Succes!');
     } catch(error)
     {
         console.log(error);
