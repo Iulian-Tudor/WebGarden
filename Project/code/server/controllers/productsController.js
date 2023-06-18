@@ -185,6 +185,7 @@ export default class ProductsController {
             
             product['seller_id'] = userSession.user_id;
             product['quantity'] = product['quantity'] ?? 1;
+            product['harvestable'] = false;
 
             const products = db.collection('products');
 

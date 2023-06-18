@@ -65,6 +65,10 @@ export default class Sensor{
         }
     }
 
+    async analizeImage() {
+        
+    }
+
     start(){
         if(this.interval_id!=null)
             clearInterval(this.interval_id);

@@ -14,6 +14,7 @@ import Sensor from './services/sensor.js';
 import { WHITELIST } from './settings.js';
 import { requireAuth } from './Utils/middlewares.js';
 
+
 const router = new Router();
 
 registerRoutes(router);
@@ -32,7 +33,6 @@ registerRoutes(router);
     const sensor_service = new Sensor();
     sensor_service.start();
 })();
-
 
 const server = http.createServer(async (req, res) => {
     const requestType = RequestType.fromString(req.method);
