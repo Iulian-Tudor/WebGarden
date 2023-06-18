@@ -1,10 +1,11 @@
 import { connectToDb } from '../db/db.js';
 import { ObjectId } from 'mongodb';
 
-function createNotification(img_link, desc){
+function createNotification( flower_id, img_link, desc){
     var notif = {
         "img" : img_link,
-        "desc": desc
+        "desc": desc,
+        "id": flower_id
     }
 
     return notif;
@@ -31,31 +32,31 @@ export async function getNotification(req, res, userSession){
             const opt_hum = product['flower_data']['optimal_parameters']['humidity'];
 
             if(sensor_data['water'] < opt_water){
-                notificationList.push(createNotification(product['image_url'], product['name']+" nu are destula apa!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name']+" nu are destula apa!"));
             }
 
             if(sensor_data['water'] >= 4*opt_water){
-                notificationList.push(createNotification(product['image_url'], product['name'] +" are prea multa apa!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] +" are prea multa apa!"));
             }
 
             if(sensor_data['soil'] != opt_soil){
-                notificationList.push(createNotification(product['image_url'], product['name'] + " nu are solul potrivit!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] + " nu are solul potrivit!"));
             }
 
             if(sensor_data['temperature'] < opt_temp*0.95){
-                notificationList.push(createNotification(product['image_url'], product['name'] + " are temperatura prea scazuta!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] + " are temperatura prea scazuta!"));
             }
 
             if(sensor_data['temperature'] > opt_temp*1.05){
-                notificationList.push(createNotification(product['image_url'], product['name'] + " are temperatura prea ridicata!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] + " are temperatura prea ridicata!"));
             }
 
             if(sensor_data['humidity'] < opt_hum*0.95){
-                notificationList.push(createNotification(product['image_url'], product['name'] + " are umiditatea prea scazuta!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] + " are umiditatea prea scazuta!"));
             }
 
             if(sensor_data['humidity'] > opt_temp*1.05){
-                notificationList.push(createNotification(product['image_url'], product['name'] + " are umiditatea prea ridicata!"));
+                notificationList.push(createNotification(product['_id'], product['image_url'], product['name'] + " are umiditatea prea ridicata!"));
             }
         }
         

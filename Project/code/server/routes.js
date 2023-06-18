@@ -4,11 +4,12 @@ import { logoutUser } from "./controllers/logoutController.js";
 import ProductsController from "./controllers/productsController.js";
 import { verifyEmail } from "./Utils/emailVerification.js";
 import { requestPasswordReset, resetPassword } from './Utils/resetPassword.js';
-import { handlePlantedFlowers, handleReadyFlowers } from "./plantedFlowers.js";
 import { getNotification } from "./controllers/notificationController.js";
 import { getWatchlist } from "./controllers/watchlistController.js";
 import { requireAuth } from "./Utils/middlewares.js";
 import { addToWatchlist } from "./controllers/addToWatchlist.js";
+import { getFlowerParams, getGrowingFlowers, getReadyFlowers } from "./controllers/myGardenController.js";
+import { getUserDetails } from "./controllers/userDetailsController.js";
 
 
 function registerRoutes(router) {
@@ -32,9 +33,11 @@ function registerRoutes(router) {
     ProductsController.registerRoutes(router);
     router.get('/notifs', requireAuth(getNotification));
     router.get('/watchlist', requireAuth(getWatchlist));
-    router.get('/plantedFlowers', requireAuth(handlePlantedFlowers));
-    router.get('/readyFlowers', requireAuth(handleReadyFlowers));
+    router.get('/growing-flowers', requireAuth(getGrowingFlowers));
+    router.get('/ready-flowers', requireAuth(getReadyFlowers));
+    router.get('/flower-params', requireAuth(getFlowerParams));
     router.get('/verify-email', verifyEmail);
+    router.get('/user-details', requireAuth(getUserDetails));
 }
 
 export { registerRoutes };
