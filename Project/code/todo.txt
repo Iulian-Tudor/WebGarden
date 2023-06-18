@@ -1,3 +1,0 @@
-- functionalitate buton de watchlist
-- myaccount.html - luat username din db + sters account icon + sters buton de editare detalii cont + sters horizontal scrollbar
-- mygarden.html - luat info din db
