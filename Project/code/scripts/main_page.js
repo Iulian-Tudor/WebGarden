@@ -36,7 +36,10 @@ function generateCSV() {
     let content = '';
 
     const appendRow = row => {
-        content += row.map(item => item ? item.toString() : '').join(',') + '\n';
+        content += row.map(item => {
+            const field = (item ? item.toString() : '');
+            return field.indexOf(',') === -1 ? field : "\"" + field + "\"";
+        }).join(',') + '\n';
     };
 
     appendRow(header);
