@@ -23,8 +23,11 @@ async function main() {
         toggleSidebar();
     });
 
-    const exportBtn = document.querySelector('.csv-export');
-    exportBtn.addEventListener('click', () => generateCSV());
+    const exportCSVBtn = document.querySelector('.csv-export');
+    exportCSVBtn.addEventListener('click', () => generateCSV());
+
+    const exportJSONBtn = document.querySelector('.json-export');
+    exportJSONBtn.addEventListener('click', () => generateJSON());
 }
 
 function generateCSV() {
@@ -46,7 +49,6 @@ function generateCSV() {
         appendRow(row);
     }
 
-
     const blob = new Blob([content], { type: 'text/plain' });
 
     const downloadLink = document.createElement('a');
@@ -54,6 +56,19 @@ function generateCSV() {
 
     downloadLink.href = url;
     downloadLink.download = 'products.csv';
+    downloadLink.click();
+
+    window.URL.revokeObjectURL(url);
+}
+
+function generateJSON() {
+    const blob = new Blob([JSON.stringify(products)], { type: 'application/json' });
+
+    const downloadLink = document.createElement('a');
+    const url = window.URL.createObjectURL(blob);
+
+    downloadLink.href = url;
+    downloadLink.download = 'products.json';
     downloadLink.click();
 
     window.URL.revokeObjectURL(url);
