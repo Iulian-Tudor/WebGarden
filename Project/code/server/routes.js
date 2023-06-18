@@ -19,11 +19,6 @@ function registerRoutes(router) {
         res.end();
     });
 
-    router.post('/', (req, res) => {
-        console.log(req.body);
-        res.end();
-    });
-
     router.post('/login', loginUser);
     router.post('/register', registerUser);
     router.post('/logout', requireAuth(logoutUser));
