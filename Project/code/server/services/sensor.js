@@ -31,11 +31,35 @@ export default class Sensor{
     }
 
     getSensorDelta(flower_params){
+        let water_value = flower_params['water'] + this.getRandomFloat([-1, 1]);
+
+        if(water_value<this.water_bounds[0])
+            water_value = this.water_bounds[0];
+
+        if(water_value>this.water_bounds[1])
+            water_value = this.water_bounds[1];
+        
+        let temp_value = flower_params['temp'] + this.getRandomFloat([-1, 1]);
+
+        if(temp_value<this.temperature_bounds[0])
+            temp_value = this.temperature_bounds[0];
+
+        if(temp_value>this.temperature_bounds[1])
+            temp_value = this.temperature_bounds[1];
+
+        let hum_value = flower_params['humidity'] + this.getRandomFloat([-1, 1]);
+
+        if(hum_value<this.humidity_bounds[0])
+            hum_value = this.humidity_bounds[0];
+
+        if(hum_value>this.humidity_bounds[1])
+            hum_value = this.humidity_bounds[1];
+
         const data = {
-            "water": flower_params['water'] + this.getRandomFloat([-1, 1]),
+            "water": water_value,
             "soil": flower_params['soil'],
-            "temperature": flower_params['temperature'] + this.getRandomFloat([-1, 1]),
-            "humidity": flower_params['humidity'] + this.getRandomFloat([-1, 1])
+            "temperature": temp_value,
+            "humidity": hum_value
         }
 
         return data;
@@ -56,6 +80,7 @@ export default class Sensor{
                 else{
                     await db.collection('last_params').updateOne({_id: last_flower_params['_id']}, {$set: this.getSensorDelta(last_flower_params)});
                 }
+                await this.analyzeImage(product);
             }
         }catch(error){
             console.log(error);
@@ -65,8 +90,18 @@ export default class Sensor{
         }
     }
 
-    async analizeImage() {
+    async analyzeImage(product) {
+        if(product.harvestable === true)
+            return;
         
+        const {db, client} = await connectToDb();
+
+        const prob = this.getRandomInt([0, 100]);
+
+        if(prob < 30)
+        {
+            await db.collection('products').updateOne({_id: product._id}, {$set: {harvestable: true}});
+        }
     }
 
     start(){
