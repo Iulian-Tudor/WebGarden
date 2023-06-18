@@ -1,7 +1,7 @@
 import { connectToDb } from "../db/db.js";
 import cookie from 'cookie';
 
-function requireAuth(next) {
+function requireAuth(next, verdict=true) {
     // middleware to check for auth
     return async (req, res) => {
         const { db, client } = await connectToDb();
@@ -26,8 +26,12 @@ function requireAuth(next) {
         }
 
         if(userSession === null) {
-            res.statusCode = 403;
-            return res.end("Not authorized");
+            if(verdict) {
+                res.statusCode = 403;
+                return res.end("Not authorized");
+            } else {
+                return;
+            }
         }
         return next(req, res, userSession);
     };

@@ -11,6 +11,8 @@ import { connectToDb } from './db/db.js';
 import parseBody from './parsers/BodyParser.js';
 import parseURL from './parsers/URLParser.js';
 import Sensor from './services/sensor.js';
+import { WHITELIST } from './settings.js';
+import { requireAuth } from './Utils/middlewares.js';
 
 const router = new Router();
 
@@ -43,10 +45,19 @@ const server = http.createServer(async (req, res) => {
     let url;
     try {
         [url, req.params] = parseURL(req.url);
-        // TODO: see if there's any use for the 'data' variable. Technically, it should not be treated as the body, but ¯\_(ツ)_/¯
     } catch(e) {
         res.statusCode = 400;
         return res.end();
+    }
+
+    if(url.indexOf('/html/') === 0 && WHITELIST.indexOf(url) === -1) {
+        const auth = await requireAuth(() => true, false)(req, res);
+        if(!auth) {
+            res.setHeader('Location', '/html/login.html');
+            res.statusCode = 302;
+            res.end();
+            return;
+        }
     }
 
 
