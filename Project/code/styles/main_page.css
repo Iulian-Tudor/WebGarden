@@ -162,14 +162,18 @@ img {
     font-size: 25px;
 }
 
-.csv-export {
+.export {
+    display: flex;
+    align-self: center;
+}
+
+.export-btn {
     background-color: #00bf63;
     padding: 20px 30px;
     border-radius: 10px;
     margin-bottom: 10px;
     color: white;
     font-weight: bold;
-    align-self: center;
 }
 
 @media only screen and (max-width: 900px) {
