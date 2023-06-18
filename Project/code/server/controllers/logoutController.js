@@ -1,4 +1,5 @@
 import { connectToDb } from '../db/db.js';
+import cookie from 'cookie';
 
 async function logoutUser(req, res) {
   // Get the encrypted email from the cookie

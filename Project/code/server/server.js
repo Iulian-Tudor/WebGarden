@@ -50,21 +50,6 @@ const server = http.createServer(async (req, res) => {
     }
 
 
-    /*
-    if (url === '/resetPass.html') {
-        try {
-          const filePath = path.join(__dirname, '..','..', 'html', 'resetPass.html');
-          const data = await fs.promises.readFile(filePath, 'utf-8');
-          res.setHeader('Content-Type', 'text/html');
-          res.statusCode = 200;
-          return res.end(data);
-        } catch (err) {
-          console.error(err);
-          res.statusCode = 404;
-          return res.end('Not found');
-        }
-      } */
-
     if(!router.exists(url, requestType)) {
         try {
             const data = await fs.promises.readFile('..' + url);

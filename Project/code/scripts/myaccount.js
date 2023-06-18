@@ -1,3 +1,27 @@
+async function doLogout() {
+    const logoutBtn = document.getElementById('logout-btn');
+
+    //console.log('Button pressed!');
+    logoutBtn.addEventListener('click', async () => {
+        try {
+          const response = await fetch('/logout', {
+            method: 'POST',
+            body: JSON.stringify({}),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if(response.ok){
+            window.location.href = '/html/login.html';
+          }
+        } catch(error)
+          {
+            console.log(error);
+          }
+    });
+}
+
 function createNotification(flower_id, img, desc, emoji) {
     const notif = document.createElement('div');
     const image = document.createElement('img');
@@ -7,7 +31,7 @@ function createNotification(flower_id, img, desc, emoji) {
 
     image.src = img;
     paragraph.textContent = emoji + ' ' + desc;
-    anchor.href = '/html/mygarden.html?flower_id='+flower_id;
+    anchor.href = '/html/mygarden.html?flower_id=' + flower_id;
     button.textContent = 'Vezi problema';
     anchor.append(button);
 
@@ -31,7 +55,7 @@ function createWatchlistNotification(flower_id, img, desc) {
 
     image.src = img;
     paragraph.textContent = desc;
-    anchor.href = '/html/product.html?flower_id='+flower_id;
+    anchor.href = '/html/product.html?flower_id=' + flower_id;
     button.textContent = 'Verifica';
     anchor.append(button);
 
@@ -86,10 +110,11 @@ async function updateWatchlist() {
 async function greetUser() {
     const response = await fetch("/user-details");
     const userData = await response.json();
-    
-    document.querySelector("#user-title").textContent = "Salutare, "+userData["username"]+"!";
+
+    document.querySelector("#user-title").textContent = "Salutare, " + userData["username"] + "!";
 }
 
 greetUser();
+doLogout();
 updateNotifications();
 updateWatchlist();
