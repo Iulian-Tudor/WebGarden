@@ -51,7 +51,7 @@ export async function registerUser(req, res) {
     client.close();
   
     res.setHeader('Location', '/html/checkEmail.html'); // Set the Location header to the desired redirect path
-    res.statusCode = 302; // Set the status code to 302 for a temporary redirect
+    res.statusCode = 200; // Set the status code to 302 for a temporary redirect
     res.end();
   } catch (error) {
     console.log(error);

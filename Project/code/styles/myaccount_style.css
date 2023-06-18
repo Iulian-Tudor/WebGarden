@@ -32,12 +32,15 @@ body {
     padding: 10px;
     border-radius: 5px;
     background-color: #7ED957;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #user-title {
     text-align: center;
     font-family: 'Playlist', sans-serif;
-    font-size: 70px;
+    font-size: 40px;
     text-shadow: 1px 1px black;
 }
 
@@ -45,7 +48,7 @@ body {
     text-align: justify;
 }
 
-#edit-details-button {
+#logout-btn {
     background-color: #BA98FF;
     border-radius: 10px;
     font-size: 15px;
@@ -54,9 +57,11 @@ body {
     border: none;
     color: white;
     margin-top: 10px;
+    text-align: center;
+    font-size: 30px; 
 }
 
-#edit-details-button:hover {
+#logout-btn:hover {
     background-color: white;
     color: #BA98FF;
 }

@@ -188,7 +188,7 @@ function constructProductElement(product) {
         });
         window.location.href = '/html/shopping_cart.html';
     }
-    
+
     element.querySelector('.watch').addEventListener('click', function (){addProductToWatchlist(product);});
 
     return element;
@@ -250,14 +250,13 @@ function urlEncode(payload) {
 
 async function addProductToWatchlist(product)
 {
-    console.log(product._id);
     const watchBody = { 'flower_id': product._id };
 
     try{
         const response = await fetch('/add-to-watchlist', {
             method: 'POST',
             body: JSON.stringify(watchBody),
-            header: {
+            headers: {
                 'content-type': 'application/json'
             }
         });
